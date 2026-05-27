@@ -1,0 +1,21 @@
+{
+  "video_id": "1_00_01",
+  "frame_count": 225,
+  "ball_visible_frames": 225,
+  "ball_detection_rate": 1.0,
+  "ball_missing_segments": [],
+  "player_coverage": {
+    "near": 1.0,
+    "far": 0.36444444444444446
+  },
+  "source_files": {
+    "ball": "output\\1_00_01\\1_00_01_ball.csv",
+    "players": "output\\1_00_01\\1_00_01_players.csv",
+    "motion": "output\\1_00_01\\1_00_01_motion.csv",
+    "stats": "output\\1_00_01\\1_00_01_stats.json",
+    "original": "inputs\\1_00_01.mp4",
+    "overlay": "output\\1_00_01\\1_00_01_overlay.mp4",
+    "final": "output\\1_00_01\\1_00_01_final.mp4"
+  },
+  "warnings": []
+}

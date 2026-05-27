@@ -1,0 +1,108 @@
+.axis path,
+.axis line {
+  stroke: #cbd5e0;
+}
+
+.axis text {
+  fill: var(--muted);
+  font-family: var(--mono);
+  font-size: 11px;
+}
+
+.grid-line {
+  stroke: #edf2f7;
+  stroke-width: 1;
+}
+
+.court-bg {
+  fill: #f8fbff;
+}
+
+.court-line {
+  fill: none;
+  stroke: #5a6b7d;
+  stroke-width: 1.2;
+}
+
+.trajectory-near {
+  fill: none;
+  stroke: var(--rose);
+  stroke-width: 2.2;
+}
+
+.trajectory-far {
+  fill: none;
+  stroke: var(--teal);
+  stroke-width: 2.2;
+}
+
+.trajectory-ball {
+  fill: none;
+  stroke: var(--orange);
+  stroke-width: 1.8;
+}
+
+.current-marker {
+  stroke: #ffffff;
+  stroke-width: 2;
+}
+
+.speed-near {
+  fill: none;
+  stroke: var(--rose);
+  stroke-width: 2;
+}
+
+.speed-far {
+  fill: none;
+  stroke: var(--teal);
+  stroke-width: 2;
+}
+
+.ball-speed {
+  fill: none;
+  stroke: var(--orange);
+  stroke-width: 2;
+}
+
+.series-area {
+  pointer-events: none;
+}
+
+.missing-band {
+  fill: rgba(229, 62, 62, 0.045);
+}
+
+.cursor-line {
+  stroke: #2d3748;
+  stroke-width: 1;
+  stroke-dasharray: 4 4;
+  pointer-events: none;
+}
+
+.timeline-visible {
+  fill: #38a169;
+  opacity: 0.76;
+}
+
+.timeline-low {
+  fill: #d69e2e;
+  opacity: 0.76;
+}
+
+.timeline-missing {
+  fill: #e53e3e;
+  opacity: 0.72;
+}
+
+.chart-caption {
+  fill: var(--muted);
+  font-family: var(--mono);
+  font-size: 11px;
+}
+
+.empty-note {
+  color: var(--muted);
+  font-size: 13px;
+  padding: 16px;
+}

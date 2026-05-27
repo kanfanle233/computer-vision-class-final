@@ -1,0 +1,268 @@
+{
+  "video_id": "pro_match17_2_01_01",
+  "frame_count": 531,
+  "ball_visible_frames": 446,
+  "ball_detection_rate": 0.839924670433145,
+  "ball_missing_segments": [
+    {
+      "start_frame": 12,
+      "end_frame": 23,
+      "length": 12
+    },
+    {
+      "start_frame": 35,
+      "end_frame": 35,
+      "length": 1
+    },
+    {
+      "start_frame": 102,
+      "end_frame": 102,
+      "length": 1
+    },
+    {
+      "start_frame": 104,
+      "end_frame": 104,
+      "length": 1
+    },
+    {
+      "start_frame": 137,
+      "end_frame": 137,
+      "length": 1
+    },
+    {
+      "start_frame": 145,
+      "end_frame": 147,
+      "length": 3
+    },
+    {
+      "start_frame": 154,
+      "end_frame": 186,
+      "length": 33
+    },
+    {
+      "start_frame": 218,
+      "end_frame": 218,
+      "length": 1
+    },
+    {
+      "start_frame": 221,
+      "end_frame": 221,
+      "length": 1
+    },
+    {
+      "start_frame": 245,
+      "end_frame": 245,
+      "length": 1
+    },
+    {
+      "start_frame": 296,
+      "end_frame": 296,
+      "length": 1
+    },
+    {
+      "start_frame": 336,
+      "end_frame": 336,
+      "length": 1
+    },
+    {
+      "start_frame": 351,
+      "end_frame": 351,
+      "length": 1
+    },
+    {
+      "start_frame": 359,
+      "end_frame": 359,
+      "length": 1
+    },
+    {
+      "start_frame": 370,
+      "end_frame": 370,
+      "length": 1
+    },
+    {
+      "start_frame": 387,
+      "end_frame": 387,
+      "length": 1
+    },
+    {
+      "start_frame": 394,
+      "end_frame": 394,
+      "length": 1
+    },
+    {
+      "start_frame": 414,
+      "end_frame": 414,
+      "length": 1
+    },
+    {
+      "start_frame": 432,
+      "end_frame": 432,
+      "length": 1
+    },
+    {
+      "start_frame": 437,
+      "end_frame": 437,
+      "length": 1
+    },
+    {
+      "start_frame": 446,
+      "end_frame": 446,
+      "length": 1
+    },
+    {
+      "start_frame": 479,
+      "end_frame": 495,
+      "length": 17
+    },
+    {
+      "start_frame": 502,
+      "end_frame": 503,
+      "length": 2
+    }
+  ],
+  "default_trajectory_mode": "reference",
+  "trajectory_modes": {
+    "reference": {
+      "source_type": "reference",
+      "label": "官方参考",
+      "source_file": "inputs\\pro_match17_2_01_01_ball.csv",
+      "ball_visible_frames": 446,
+      "ball_detection_rate": 0.839924670433145,
+      "ball_missing_segments": [
+        {
+          "start_frame": 12,
+          "end_frame": 23,
+          "length": 12
+        },
+        {
+          "start_frame": 35,
+          "end_frame": 35,
+          "length": 1
+        },
+        {
+          "start_frame": 102,
+          "end_frame": 102,
+          "length": 1
+        },
+        {
+          "start_frame": 104,
+          "end_frame": 104,
+          "length": 1
+        },
+        {
+          "start_frame": 137,
+          "end_frame": 137,
+          "length": 1
+        },
+        {
+          "start_frame": 145,
+          "end_frame": 147,
+          "length": 3
+        },
+        {
+          "start_frame": 154,
+          "end_frame": 186,
+          "length": 33
+        },
+        {
+          "start_frame": 218,
+          "end_frame": 218,
+          "length": 1
+        },
+        {
+          "start_frame": 221,
+          "end_frame": 221,
+          "length": 1
+        },
+        {
+          "start_frame": 245,
+          "end_frame": 245,
+          "length": 1
+        },
+        {
+          "start_frame": 296,
+          "end_frame": 296,
+          "length": 1
+        },
+        {
+          "start_frame": 336,
+          "end_frame": 336,
+          "length": 1
+        },
+        {
+          "start_frame": 351,
+          "end_frame": 351,
+          "length": 1
+        },
+        {
+          "start_frame": 359,
+          "end_frame": 359,
+          "length": 1
+        },
+        {
+          "start_frame": 370,
+          "end_frame": 370,
+          "length": 1
+        },
+        {
+          "start_frame": 387,
+          "end_frame": 387,
+          "length": 1
+        },
+        {
+          "start_frame": 394,
+          "end_frame": 394,
+          "length": 1
+        },
+        {
+          "start_frame": 414,
+          "end_frame": 414,
+          "length": 1
+        },
+        {
+          "start_frame": 432,
+          "end_frame": 432,
+          "length": 1
+        },
+        {
+          "start_frame": 437,
+          "end_frame": 437,
+          "length": 1
+        },
+        {
+          "start_frame": 446,
+          "end_frame": 446,
+          "length": 1
+        },
+        {
+          "start_frame": 479,
+          "end_frame": 495,
+          "length": 17
+        },
+        {
+          "start_frame": 502,
+          "end_frame": 503,
+          "length": 2
+        }
+      ],
+      "evaluation": null
+    }
+  },
+  "trajectory_metadata": {},
+  "player_coverage": {
+    "near": 1.0,
+    "far": 0.9887005649717514
+  },
+  "source_files": {
+    "ball": "output\\pro_match17_2_01_01\\pro_match17_2_01_01_ball.csv",
+    "players": "output\\pro_match17_2_01_01\\pro_match17_2_01_01_players.csv",
+    "motion": "output\\pro_match17_2_01_01\\pro_match17_2_01_01_motion.csv",
+    "stats": "output\\pro_match17_2_01_01\\pro_match17_2_01_01_stats.json",
+    "original": "inputs\\pro_match17_2_01_01.mp4",
+    "overlay": "output\\pro_match17_2_01_01\\pro_match17_2_01_01_overlay.mp4",
+    "final": "output\\pro_match17_2_01_01\\pro_match17_2_01_01_final.mp4"
+  },
+  "warnings": [
+    "raw_prediction ignored: duplicate, missing, or extra frames in source CSV"
+  ]
+}

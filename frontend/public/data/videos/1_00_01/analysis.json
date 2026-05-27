@@ -1,0 +1,110 @@
+{
+  "video_id": "1_00_01",
+  "title": "1_00_01",
+  "fps": 30.0,
+  "frame_count": 225,
+  "duration_s": 7.5,
+  "court_points_px": [
+    [
+      627.0,
+      481.0
+    ],
+    [
+      844.0,
+      489.0
+    ],
+    [
+      810.0,
+      716.0
+    ],
+    [
+      75.0,
+      646.0
+    ]
+  ],
+  "court_size_m": {
+    "width": 6.1,
+    "length": 13.4
+  },
+  "homography": [
+    [
+      -0.00481138248951624,
+      -0.016096261419472506,
+      10.759038563692958
+    ],
+    [
+      0.001654485594185652,
+      -0.04487792174228609,
+      20.548917890485203
+    ],
+    [
+      4.393696996093671e-05,
+      -0.00251401160148308,
+      1.0
+    ]
+  ],
+  "players": {
+    "far": {
+      "current_speed_mps": 0.0,
+      "rally_distance_m": 7.665417279550487,
+      "rally_time_s": 2.3000000000000016,
+      "rally_max_speed_mps": 7.28084693664448,
+      "rally_avg_speed_mps": 3.3327901215436877,
+      "total_distance_m": 7.665417279550487,
+      "total_time_s": 2.3000000000000016,
+      "total_max_speed_mps": 7.28084693664448,
+      "total_avg_speed_mps": 3.3327901215436877
+    },
+    "near": {
+      "current_speed_mps": 1.5840278819996607,
+      "rally_distance_m": 13.241566443187011,
+      "rally_time_s": 7.266666666666651,
+      "rally_max_speed_mps": 8.79084465405526,
+      "rally_avg_speed_mps": 1.8222339142000514,
+      "total_distance_m": 13.241566443187011,
+      "total_time_s": 7.266666666666651,
+      "total_max_speed_mps": 8.79084465405526,
+      "total_avg_speed_mps": 1.8222339142000514
+    }
+  },
+  "analysis_meta": {
+    "video_id": "1_00_01",
+    "frames": 225,
+    "fps": 30.0,
+    "duration_s": 7.5,
+    "resolution": "1280x720",
+    "ball_visible_rate": 1.0,
+    "near_visible_rate": 1.0,
+    "far_visible_rate": 0.36444444444444446,
+    "detection_gaps": 0,
+    "near_distance_m": 13.241566443187011,
+    "far_distance_m": 7.665417279550487,
+    "max_speed_mps": 8.79084465405526
+  },
+  "original_video_meta": {
+    "file_name": "1_00_01.mp4",
+    "path": "E:\\PythonProject\\pythonProject\\计算机视觉大作业\\badminton-pipeline-repro-windows-clean\\inputs\\1_00_01.mp4",
+    "size_bytes": 3615222,
+    "width": 1280,
+    "height": 720,
+    "fps": 30.0,
+    "frame_count": 225,
+    "duration_s": 7.5,
+    "resolution": "1280x720"
+  },
+  "uploaded_video_meta": {
+    "file_name": "前端可视化.mp4",
+    "path": "E:\\PythonProject\\pythonProject\\计算机视觉大作业\\badminton-pipeline-repro-windows-clean\\inputs\\前端可视化.mp4",
+    "source": "missing_reference_video",
+    "warning": "Uploaded reference video was not found on disk."
+  },
+  "files": {
+    "ball": "ball.csv",
+    "players": "players.csv",
+    "motion": "motion.csv",
+    "quality": "quality.json",
+    "original_video": "original.webm",
+    "overlay_video": "overlay.mp4",
+    "final_video": "final.mp4"
+  }
+}
