@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Badminton Visual Analytics</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="styles/base.css">
+    <link rel="stylesheet" href="styles/layout.css">
+    <link rel="stylesheet" href="styles/charts.css">
+    <script src="src/vendor/d3.min.js"></script>
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <div class="title-block">
+          <p class="eyebrow">Computer Vision · Badminton</p>
+          <h1>Trajectory Visual Analytics</h1>
+          <p class="subtitle">Badminton Movement and Detection Quality Dashboard</p>
+        </div>
+        <div class="controls">
+          <label class="select-label" for="videoSelect">Video</label>
+          <select id="videoSelect"></select>
+          <div class="segment" aria-label="Video source">
+            <button id="showOriginal" type="button">Original</button>
+            <button id="showOverlay" class="active" type="button">Overlay</button>
+            <button id="showFinal" type="button">Final Result</button>
+          </div>
+          <button id="exportButton" class="export-button" type="button">Export</button>
+        </div>
+      </header>
+
+      <section class="summary-strip" id="statCards"></section>
+
+      <section class="dashboard-grid">
+        <div class="column-video">
+          <section class="video-panel">
+            <div class="video-wrap">
+              <video id="matchVideo" controls playsinline preload="metadata"></video>
+              <div id="videoStatus" class="video-status" aria-live="polite">Loading video frame...</div>
+            </div>
+            <div class="frame-readout">
+              <span id="currentFrame">Frame 0</span>
+              <span id="videoMeta">0 fps · 0 frames</span>
+            </div>
+          </section>
+
+          <section class="panel temporal-panel">
+            <div class="panel-head">
+              <div>
+                <h2>Temporal Analytics</h2>
+                <p class="panel-subtitle">Speed, distance, and confidence curves.</p>
+              </div>
+              <div class="segment compact" aria-label="Temporal metric">
+                <button id="metricSpeed" data-metric="speed" class="active" type="button">Speed</button>
+                <button id="metricDistance" data-metric="distance" type="button">Distance</button>
+                <button id="metricConfidence" data-metric="confidence" type="button">Confidence</button>
+              </div>
+            </div>
+            <div id="speedChart" class="chart-box"></div>
+            <div id="temporalLegend" class="legend-row"></div>
+          </section>
+        </div>
+
+        <div class="column-court">
+          <section class="panel court-panel">
+            <div class="panel-head">
+              <div>
+                <h2>Court Spatial View</h2>
+                <p class="panel-subtitle">Trajectory and density in one synchronized court.</p>
+              </div>
+              <div class="segment compact court-mode-control" aria-label="Mini court mode">
+                <button id="courtModeTrajectory" class="active" data-court-mode="trajectory" type="button">Trajectory</button>
+                <button id="courtModeDensity" data-court-mode="density" type="button">Heatmap</button>
+              </div>
+              <span id="qualityBadge" class="badge">Ready</span>
+            </div>
+            <div id="miniCourt" class="chart-box"></div>
+            <div class="legend-row">
+              <span><i class="dot ball"></i>Shuttle</span>
+              <span><i class="dot near"></i>Near Player</span>
+              <span><i class="dot far"></i>Far Player</span>
+              <span><i class="dot current"></i>Current Frame</span>
+            </div>
+            <div id="courtFrameInfo" class="court-frame-info">Frame 0 · Ball position unavailable</div>
+          </section>
+
+          <section class="panel zone-panel">
+            <div class="panel-head">
+              <div>
+                <h2>Court Zone Occupancy</h2>
+                <p class="panel-subtitle">Where each player spends tracked time.</p>
+              </div>
+              <span class="micro-badge">Players only</span>
+            </div>
+            <div id="zoneOccupancy" class="chart-box zone-box"></div>
+            <div class="legend-row">
+              <span><i class="dot near"></i>Near Player</span>
+              <span><i class="dot far"></i>Far Player</span>
+              <span>Share of valid tracked frames</span>
+            </div>
+            <div id="zoneInsight" class="zone-insight">Click a bar to seek a representative frame.</div>
+          </section>
+        </div>
+
+        <div class="column-analytics">
+          <section class="panel quality-timeline-panel">
+            <div class="panel-head">
+              <div>
+                <h2>Detection Reliability Timeline</h2>
+                <p class="panel-subtitle">Shows frame-level detection status of shuttle and players</p>
+              </div>
+            </div>
+            <div id="visibilityTimeline" class="chart-box timeline-box"></div>
+            <div class="legend-row">
+              <span><i class="swatch detected"></i>Valid detection</span>
+              <span><i class="swatch low"></i>Low confidence</span>
+              <span><i class="swatch missing"></i>Missing target</span>
+            </div>
+            <div id="qualityWarning" class="quality-warning">Red segments indicate missing detections and may cause trajectory gaps.</div>
+          </section>
+
+          <section class="panel tab-panel">
+            <div class="panel-head tabs-head">
+              <div class="tab-triggers">
+                <button class="tab-btn active" data-tab="tab-quality" type="button">Quality Stats</button>
+                <button class="tab-btn" data-tab="tab-meta" type="button">Video Metadata</button>
+              </div>
+            </div>
+            <div id="tab-quality" class="tab-content active">
+              <div id="qualityPanel"></div>
+            </div>
+
+            <div id="tab-meta" class="tab-content">
+              <div class="metadata-grid">
+                <div>
+                  <h3>Uploaded Video</h3>
+                  <dl id="uploadedMeta"></dl>
+                </div>
+                <div>
+                  <h3>Analysis Clip</h3>
+                  <dl id="analysisMeta"></dl>
+                </div>
+                <div>
+                  <h3>Export Paths</h3>
+                  <pre id="exportPaths"></pre>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </section>
+      <div id="timelineTooltip" class="timeline-tooltip"></div>
+    </main>
+
+    <script type="module" src="src/main.js?v=spatial-merge-20260527"></script>
+  </body>
+</html>
