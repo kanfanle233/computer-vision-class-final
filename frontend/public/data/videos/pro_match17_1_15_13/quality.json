@@ -1,0 +1,118 @@
+{
+  "video_id": "pro_match17_1_15_13",
+  "frame_count": 531,
+  "ball_visible_frames": 522,
+  "ball_detection_rate": 0.9830508474576272,
+  "ball_missing_segments": [
+    {
+      "start_frame": 95,
+      "end_frame": 96,
+      "length": 2
+    },
+    {
+      "start_frame": 119,
+      "end_frame": 119,
+      "length": 1
+    },
+    {
+      "start_frame": 152,
+      "end_frame": 152,
+      "length": 1
+    },
+    {
+      "start_frame": 207,
+      "end_frame": 207,
+      "length": 1
+    },
+    {
+      "start_frame": 228,
+      "end_frame": 228,
+      "length": 1
+    },
+    {
+      "start_frame": 253,
+      "end_frame": 253,
+      "length": 1
+    },
+    {
+      "start_frame": 320,
+      "end_frame": 320,
+      "length": 1
+    },
+    {
+      "start_frame": 412,
+      "end_frame": 412,
+      "length": 1
+    }
+  ],
+  "default_trajectory_mode": "reference",
+  "trajectory_modes": {
+    "reference": {
+      "source_type": "reference",
+      "label": "官方参考",
+      "source_file": "inputs\\pro_match17_1_15_13_ball.csv",
+      "ball_visible_frames": 522,
+      "ball_detection_rate": 0.9830508474576272,
+      "ball_missing_segments": [
+        {
+          "start_frame": 95,
+          "end_frame": 96,
+          "length": 2
+        },
+        {
+          "start_frame": 119,
+          "end_frame": 119,
+          "length": 1
+        },
+        {
+          "start_frame": 152,
+          "end_frame": 152,
+          "length": 1
+        },
+        {
+          "start_frame": 207,
+          "end_frame": 207,
+          "length": 1
+        },
+        {
+          "start_frame": 228,
+          "end_frame": 228,
+          "length": 1
+        },
+        {
+          "start_frame": 253,
+          "end_frame": 253,
+          "length": 1
+        },
+        {
+          "start_frame": 320,
+          "end_frame": 320,
+          "length": 1
+        },
+        {
+          "start_frame": 412,
+          "end_frame": 412,
+          "length": 1
+        }
+      ],
+      "evaluation": null
+    }
+  },
+  "trajectory_metadata": {},
+  "player_coverage": {
+    "near": 0.9566854990583804,
+    "far": 0.992467043314501
+  },
+  "source_files": {
+    "ball": "output\\pro_match17_1_15_13\\pro_match17_1_15_13_ball.csv",
+    "players": "output\\pro_match17_1_15_13\\pro_match17_1_15_13_players.csv",
+    "motion": "output\\pro_match17_1_15_13\\pro_match17_1_15_13_motion.csv",
+    "stats": "output\\pro_match17_1_15_13\\pro_match17_1_15_13_stats.json",
+    "original": "inputs\\pro_match17_1_15_13.mp4",
+    "overlay": "output\\pro_match17_1_15_13\\pro_match17_1_15_13_overlay.mp4",
+    "final": "output\\pro_match17_1_15_13\\pro_match17_1_15_13_final.mp4"
+  },
+  "warnings": [
+    "raw_prediction ignored: duplicate, missing, or extra frames in source CSV"
+  ]
+}

@@ -1,0 +1,118 @@
+{
+  "video_id": "pro_match17_1_15_13",
+  "title": "pro_match17_1_15_13",
+  "fps": 29.97,
+  "frame_count": 531,
+  "duration_s": 17.71771771771772,
+  "court_points_px": [
+    [
+      425.0,
+      365.0
+    ],
+    [
+      884.0,
+      368.0
+    ],
+    [
+      991.0,
+      675.0
+    ],
+    [
+      222.0,
+      671.0
+    ]
+  ],
+  "court_size_m": {
+    "width": 6.1,
+    "length": 13.4
+  },
+  "homography": [
+    [
+      0.06412330652003596,
+      0.04253931772407616,
+      -42.7792562403031
+    ],
+    [
+      -0.002319390616471408,
+      0.3548667643201256,
+      -128.5406279648455
+    ],
+    [
+      -9.083408502223878e-05,
+      0.010669115212084471,
+      1.0
+    ]
+  ],
+  "players": {
+    "far": {
+      "current_speed_mps": 2.986629936686557,
+      "rally_distance_m": 47.054715108907104,
+      "rally_time_s": 16.68335001668343,
+      "rally_max_speed_mps": 9.457779081783704,
+      "rally_avg_speed_mps": 2.8204596236278783,
+      "total_distance_m": 47.054715108907104,
+      "total_time_s": 16.68335001668343,
+      "total_max_speed_mps": 9.457779081783704,
+      "total_avg_speed_mps": 2.8204596236278783
+    },
+    "near": {
+      "current_speed_mps": 0.0,
+      "rally_distance_m": 38.229660773902054,
+      "rally_time_s": 16.750083416750165,
+      "rally_max_speed_mps": 9.174043424820471,
+      "rally_avg_speed_mps": 2.2823564410235835,
+      "total_distance_m": 38.229660773902054,
+      "total_time_s": 16.750083416750165,
+      "total_max_speed_mps": 9.174043424820471,
+      "total_avg_speed_mps": 2.2823564410235835
+    }
+  },
+  "analysis_meta": {
+    "video_id": "pro_match17_1_15_13",
+    "frames": 531,
+    "fps": 29.97,
+    "duration_s": 17.71771771771772,
+    "resolution": "1280x720",
+    "ball_visible_rate": 0.9830508474576272,
+    "near_visible_rate": 0.9566854990583804,
+    "far_visible_rate": 0.992467043314501,
+    "detection_gaps": 8,
+    "near_distance_m": 38.229660773902054,
+    "far_distance_m": 47.054715108907104,
+    "max_speed_mps": 9.457779081783704
+  },
+  "original_video_meta": {
+    "file_name": "pro_match17_1_15_13.mp4",
+    "path": "E:\\PythonProject\\pythonProject\\计算机视觉大作业\\badminton-pipeline-repro-windows-clean\\inputs\\pro_match17_1_15_13.mp4",
+    "size_bytes": 13124555,
+    "width": 1280,
+    "height": 720,
+    "fps": 29.97,
+    "frame_count": 531,
+    "duration_s": 17.71771771771772,
+    "resolution": "1280x720"
+  },
+  "uploaded_video_meta": {
+    "file_name": "前端可视化.mp4",
+    "path": "E:\\PythonProject\\pythonProject\\计算机视觉大作业\\badminton-pipeline-repro-windows-clean\\inputs\\前端可视化.mp4",
+    "source": "missing_reference_video",
+    "warning": "Uploaded reference video was not found on disk."
+  },
+  "default_trajectory_mode": "reference",
+  "trajectory_modes": [
+    "reference"
+  ],
+  "trajectory_metadata": {},
+  "files": {
+    "ball": "ball.csv",
+    "players": "players.csv",
+    "motion": "motion.csv",
+    "quality": "quality.json",
+    "original_video": "original.webm",
+    "overlay_video": "overlay.webm",
+    "final_video": "final.webm",
+    "ball_modes": {
+      "reference": "ball_reference.csv"
+    }
+  }
+}

@@ -1,0 +1,108 @@
+{
+  "video_id": "short",
+  "title": "short",
+  "fps": 21.0,
+  "frame_count": 630,
+  "duration_s": 30.0,
+  "court_points_px": [
+    [
+      352.0,
+      232.0
+    ],
+    [
+      613.0,
+      232.0
+    ],
+    [
+      719.0,
+      525.0
+    ],
+    [
+      244.0,
+      525.0
+    ]
+  ],
+  "court_size_m": {
+    "width": 6.1,
+    "length": 13.4
+  },
+  "homography": [
+    [
+      0.0666281453867662,
+      0.02455917986952474,
+      -29.15083690587144
+    ],
+    [
+      4.0262956004312874e-17,
+      0.23727865796831352,
+      -55.04864864864875
+    ],
+    [
+      3.212384183386763e-18,
+      0.007977632805219025,
+      1.0
+    ]
+  ],
+  "players": {
+    "far": {
+      "rally_distance_m": 58.60366904283264,
+      "rally_time_s": 27.476190476190396,
+      "rally_max_speed_mps": 8.985367566509172,
+      "rally_avg_speed_mps": 2.132889167936723,
+      "total_distance_m": 58.60366904283264,
+      "total_time_s": 27.476190476190396,
+      "total_max_speed_mps": 8.985367566509172,
+      "total_avg_speed_mps": 2.132889167936723
+    },
+    "near": {
+      "rally_distance_m": 71.744097179434,
+      "rally_time_s": 27.2857142857142,
+      "rally_max_speed_mps": 8.975126919689096,
+      "rally_avg_speed_mps": 2.629364818094448,
+      "total_distance_m": 71.744097179434,
+      "total_time_s": 27.2857142857142,
+      "total_max_speed_mps": 8.975126919689096,
+      "total_avg_speed_mps": 2.629364818094448
+    }
+  },
+  "analysis_meta": {
+    "video_id": "short",
+    "frames": 630,
+    "fps": 21.0,
+    "duration_s": 30.0,
+    "resolution": "960x544",
+    "ball_visible_rate": 0.6365079365079365,
+    "near_visible_rate": 0.9650793650793651,
+    "far_visible_rate": 0.8761904761904762,
+    "detection_gaps": 27,
+    "near_distance_m": 71.744097179434,
+    "far_distance_m": 58.60366904283264,
+    "max_speed_mps": 8.985367566509172
+  },
+  "original_video_meta": {
+    "file_name": "short.mp4",
+    "path": "E:\\PythonProject\\pythonProject\\计算机视觉大作业\\badminton-pipeline-repro-windows-clean\\inputs\\short.mp4",
+    "size_bytes": 2111189,
+    "width": 960,
+    "height": 544,
+    "fps": 21.0,
+    "frame_count": 630,
+    "duration_s": 30.0,
+    "resolution": "960x544"
+  },
+  "uploaded_video_meta": {
+    "file_name": "前端可视化.mp4",
+    "path": "E:\\PythonProject\\pythonProject\\计算机视觉大作业\\badminton-pipeline-repro-windows-clean\\inputs\\前端可视化.mp4",
+    "source": "missing_reference_video",
+    "warning": "Uploaded reference video was not found on disk."
+  },
+  "files": {
+    "ball": "ball.csv",
+    "players": "players.csv",
+    "motion": "motion.csv",
+    "quality": "quality.json",
+    "original_video": "original.mp4",
+    "overlay_video": "overlay.webm",
+    "final_video": "final.webm"
+  }
+}

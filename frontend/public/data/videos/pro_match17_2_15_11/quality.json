@@ -1,0 +1,96 @@
+{
+  "video_id": "pro_match17_2_15_11",
+  "frame_count": 470,
+  "ball_visible_frames": 457,
+  "ball_detection_rate": 0.9723404255319149,
+  "ball_missing_segments": [
+    {
+      "start_frame": 40,
+      "end_frame": 43,
+      "length": 4
+    },
+    {
+      "start_frame": 69,
+      "end_frame": 69,
+      "length": 1
+    },
+    {
+      "start_frame": 190,
+      "end_frame": 192,
+      "length": 3
+    },
+    {
+      "start_frame": 252,
+      "end_frame": 252,
+      "length": 1
+    },
+    {
+      "start_frame": 429,
+      "end_frame": 430,
+      "length": 2
+    },
+    {
+      "start_frame": 440,
+      "end_frame": 441,
+      "length": 2
+    }
+  ],
+  "default_trajectory_mode": "reference",
+  "trajectory_modes": {
+    "reference": {
+      "source_type": "reference",
+      "label": "官方参考",
+      "source_file": "inputs\\pro_match17_2_15_11_ball.csv",
+      "ball_visible_frames": 457,
+      "ball_detection_rate": 0.9723404255319149,
+      "ball_missing_segments": [
+        {
+          "start_frame": 40,
+          "end_frame": 43,
+          "length": 4
+        },
+        {
+          "start_frame": 69,
+          "end_frame": 69,
+          "length": 1
+        },
+        {
+          "start_frame": 190,
+          "end_frame": 192,
+          "length": 3
+        },
+        {
+          "start_frame": 252,
+          "end_frame": 252,
+          "length": 1
+        },
+        {
+          "start_frame": 429,
+          "end_frame": 430,
+          "length": 2
+        },
+        {
+          "start_frame": 440,
+          "end_frame": 441,
+          "length": 2
+        }
+      ],
+      "evaluation": null
+    }
+  },
+  "trajectory_metadata": {},
+  "player_coverage": {
+    "near": 1.0,
+    "far": 1.0
+  },
+  "source_files": {
+    "ball": "output\\pro_match17_2_15_11\\pro_match17_2_15_11_ball.csv",
+    "players": "output\\pro_match17_2_15_11\\pro_match17_2_15_11_players.csv",
+    "motion": "output\\pro_match17_2_15_11\\pro_match17_2_15_11_motion.csv",
+    "stats": "output\\pro_match17_2_15_11\\pro_match17_2_15_11_stats.json",
+    "original": "inputs\\pro_match17_2_15_11.mp4",
+    "overlay": "output\\pro_match17_2_15_11\\pro_match17_2_15_11_overlay.mp4",
+    "final": "output\\pro_match17_2_15_11\\pro_match17_2_15_11_final.mp4"
+  },
+  "warnings": []
+}

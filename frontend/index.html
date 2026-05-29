@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>羽毛球轨迹分析 | CUDA 结果看板</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="styles/base.css">
+    <link rel="stylesheet" href="styles/layout.css">
+    <link rel="stylesheet" href="styles/charts.css">
+    <script src="src/vendor/d3.min.js"></script>
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <div class="title-block">
+          <p class="eyebrow">COMPUTER VISION / BADMINTON</p>
+          <h1>羽毛球轨迹分析</h1>
+          <p class="subtitle">CUDA 全流程结果看板 · 官方参考与 TrackNet 预测可对照核验</p>
+        </div>
+        <div class="controls">
+          <label class="select-label" for="videoSelect">视频片段</label>
+          <select id="videoSelect"></select>
+          <div class="segment" aria-label="视频来源">
+            <button id="showOriginal" type="button">原始画面</button>
+            <button id="showOverlay" class="active" type="button">识别叠加</button>
+            <button id="showFinal" type="button">最终效果</button>
+          </div>
+          <button id="exportButton" class="export-button" type="button">复制路径</button>
+        </div>
+      </header>
+
+      <section class="batch-overview" aria-label="七段专业比赛批量结果">
+        <div class="batch-intro">
+          <p class="eyebrow">PROFESSIONAL MATCH SET</p>
+          <h2>7 段专业比赛分析结果</h2>
+          <p id="batchStatus" class="panel-subtitle">正在读取 CUDA 处理结果...</p>
+        </div>
+        <div id="batchKpis" class="batch-kpis"></div>
+        <nav id="matchRail" class="match-rail" aria-label="专业比赛片段"></nav>
+      </section>
+
+      <section class="summary-strip" id="statCards"></section>
+
+      <section class="dashboard-grid">
+        <div class="column-video">
+          <section class="video-panel">
+            <div class="video-wrap">
+              <video id="matchVideo" controls playsinline preload="metadata"></video>
+              <div id="videoStatus" class="video-status" aria-live="polite">正在加载视频...</div>
+            </div>
+            <div class="frame-readout">
+              <span id="currentFrame">第 0 帧</span>
+              <span id="videoMeta">0 fps · 0 帧</span>
+            </div>
+          </section>
+
+          <section class="panel temporal-panel">
+            <div class="panel-head">
+              <div>
+                <h2>时序指标</h2>
+                <p class="panel-subtitle">速度、移动距离与检测置信度变化。</p>
+              </div>
+              <div class="segment compact" aria-label="时序指标">
+                <button id="metricSpeed" data-metric="speed" class="active" type="button">速度</button>
+                <button id="metricDistance" data-metric="distance" type="button">距离</button>
+                <button id="metricConfidence" data-metric="confidence" type="button">置信度</button>
+              </div>
+            </div>
+            <div id="speedChart" class="chart-box"></div>
+            <div id="temporalLegend" class="legend-row"></div>
+          </section>
+        </div>
+
+        <div class="column-court">
+          <section class="panel court-panel">
+            <div class="panel-head">
+              <div>
+                <h2>球场轨迹</h2>
+                <p class="panel-subtitle">切换官方参考、原始预测与优化预测。</p>
+              </div>
+              <div id="trajectoryModes" class="segment compact trajectory-mode-control" aria-label="轨迹来源">
+                <button data-trajectory-mode="reference" class="active" type="button">官方参考</button>
+                <button data-trajectory-mode="filtered_prediction" type="button">优化预测</button>
+                <button data-trajectory-mode="raw_prediction" type="button">原始预测</button>
+              </div>
+              <div class="segment compact court-mode-control" aria-label="球场展示模式">
+                <button id="courtModeTrajectory" class="active" data-court-mode="trajectory" type="button">轨迹</button>
+                <button id="courtModeDensity" data-court-mode="density" type="button">密度</button>
+              </div>
+              <span id="qualityBadge" class="badge">待载入</span>
+            </div>
+            <div id="miniCourt" class="chart-box"></div>
+            <div class="legend-row">
+              <span><i class="dot ball"></i>羽毛球</span>
+              <span><i class="dot near"></i>近场球员</span>
+              <span><i class="dot far"></i>远场球员</span>
+              <span><i class="dot current"></i>当前帧</span>
+            </div>
+            <div id="courtFrameInfo" class="court-frame-info">第 0 帧 · 暂无球位置</div>
+          </section>
+
+          <section class="panel heatmap-panel">
+            <div class="panel-head">
+              <div>
+                <h2>球场热力图</h2>
+                <p class="panel-subtitle">运动与落点空间密度分布。</p>
+              </div>
+              <div class="segment compact" aria-label="热力图模式">
+                <button data-heatmap="separated" class="active" type="button">分离</button>
+                <button data-heatmap="all" type="button">全部</button>
+                <button data-heatmap="ball" type="button">羽毛球</button>
+                <button data-heatmap="near" type="button">近场</button>
+                <button data-heatmap="far" type="button">远场</button>
+              </div>
+            </div>
+            <div class="canvas-wrap">
+              <canvas id="heatmapLayer" width="960" height="300"></canvas>
+            </div>
+            <div class="legend-row">
+              <span><i class="dot ball"></i>羽毛球密度</span>
+              <span><i class="dot near"></i>近场密度</span>
+              <span><i class="dot far"></i>远场密度</span>
+              <span>颜色越深 = 频率越高</span>
+            </div>
+          </section>
+        </div>
+
+        <div class="column-analytics">
+          <section class="panel quality-timeline-panel">
+            <div class="panel-head">
+              <div>
+                <h2>识别可靠性时间线</h2>
+                <p class="panel-subtitle">按帧展示羽毛球与球员检测状态。</p>
+              </div>
+            </div>
+            <div id="visibilityTimeline" class="chart-box timeline-box"></div>
+            <div class="legend-row">
+              <span><i class="swatch detected"></i>有效识别</span>
+              <span><i class="swatch low"></i>低置信度</span>
+              <span><i class="swatch missing"></i>目标缺失</span>
+            </div>
+            <div id="qualityWarning" class="quality-warning">红色区段代表漏检，可能产生轨迹空缺。</div>
+          </section>
+
+          <section class="panel tab-panel">
+            <div class="panel-head tabs-head">
+              <div class="tab-triggers">
+                <button class="tab-btn active" data-tab="tab-quality" type="button">质量统计</button>
+                <button class="tab-btn" data-tab="tab-meta" type="button">视频信息</button>
+              </div>
+            </div>
+            <div id="tab-quality" class="tab-content active">
+              <div id="qualityPanel"></div>
+            </div>
+
+            <div id="tab-meta" class="tab-content">
+              <div class="metadata-grid">
+                <div>
+                  <h3>原始视频</h3>
+                  <dl id="uploadedMeta"></dl>
+                </div>
+                <div>
+                  <h3>分析片段</h3>
+                  <dl id="analysisMeta"></dl>
+                </div>
+                <div>
+                  <h3>导出文件</h3>
+                  <pre id="exportPaths"></pre>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </section>
+      <div id="timelineTooltip" class="timeline-tooltip"></div>
+    </main>
+
+    <script type="module" src="src/main.js"></script>
+  </body>
+</html>
