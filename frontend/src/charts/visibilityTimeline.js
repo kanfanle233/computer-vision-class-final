@@ -19,14 +19,35 @@ export function createVisibilityTimeline(container, onSeek) {
 
   function updateData(data) {
     state = data;
-    g.selectAll(".axis,.tick-rect").remove();
+    g.selectAll(".axis,.tick-rect,.timeline-empty-msg").remove();
+
+    const qLevel = data.quality?.ball_quality_level || "Green";
+    if (qLevel === "Red" || !data.ball || data.ball.length === 0) {
+      // Show empty state message for Red quality videos
+      x.domain([0, Math.max(data.analysis.frame_count, 1)]);
+      g.append("text")
+        .attr("class", "timeline-empty-msg")
+        .attr("x", innerW / 2)
+        .attr("y", innerH / 2 + 10)
+        .attr("text-anchor", "middle")
+        .attr("fill", "#888")
+        .attr("font-size", "11px")
+        .text(qLevel === "Red" ? "球轨迹因质量门被禁用 — 仅展示球员分析" : "No ball data available");
+      g.append("g")
+        .attr("class", "axis")
+        .attr("transform", `translate(0,${innerH})`)
+        .call(d3.axisBottom(x).ticks(5));
+      return;
+    }
     x.domain([0, Math.max(data.analysis.frame_count, 1)]);
     const barW = Math.max(1.2, innerW / Math.max(data.analysis.frame_count, 1));
     
     g.selectAll(".tick-rect")
       .data(data.ball)
       .join("rect")
-      .attr("class", (d) => `tick-rect ${d.is_missing ? "timeline-missing" : "timeline-visible"}`)
+      .attr("class", (d) => `tick-rect ${
+        d.is_missing ? "timeline-missing" : (d.confidence !== null && d.confidence < 0.5 ? "timeline-low" : "timeline-visible")
+      }`)
       .attr("x", (d) => x(d.frame))
       .attr("y", 18)
       .attr("width", barW)

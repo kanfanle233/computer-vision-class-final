@@ -13,20 +13,18 @@ export function renderStatCards(container, data) {
   const far = data.analysis.players?.far || {};
   const near = data.analysis.players?.near || {};
   const meta = data.analysis.analysis_meta || {};
-  const trajectory = data.activeTrajectoryQuality || {};
-  const metric10 = trajectory.evaluation?.metrics?.f1_at_10px;
-  const isReference = trajectory.source_type === "reference";
+  const qLevel = data.quality.ball_quality_level || "Green";
+  const isRed = qLevel === "Red";
   const cards = [
-    ["总帧数", `${meta.frames || data.analysis.frame_count || 0}`],
-    ["帧率", formatNumber(meta.fps || data.analysis.fps, 1)],
-    ["时长", `${formatNumber(meta.duration_s || data.analysis.duration_s, 1)} s`],
-    ["分辨率", meta.resolution || "n/a"],
-    ["轨迹来源", trajectory.label || "未分类"],
-    ["F1@10px", isReference ? "标注" : (metric10 ? pct(metric10.f1) : "待重跑")],
-    ["轨迹缺口", `${(trajectory.ball_missing_segments || data.quality.ball_missing_segments || []).length}`],
-    ["近场距离", `${formatNumber(meta.near_distance_m ?? near.total_distance_m, 1)} m`],
-    ["远场距离", `${formatNumber(meta.far_distance_m ?? far.total_distance_m, 1)} m`],
-    ["最高速度", `${formatNumber(meta.max_speed_mps ?? Math.max(near.total_max_speed_mps || 0, far.total_max_speed_mps || 0), 1)} m/s`],
+    ["Frames", `${meta.frames || data.analysis.frame_count || 0}`],
+    ["FPS", formatNumber(meta.fps || data.analysis.fps, 1)],
+    ["Duration", `${formatNumber(meta.duration_s || data.analysis.duration_s, 1)} s`],
+    ["Resolution", meta.resolution || "n/a"],
+    ["Ball Visible", isRed ? "—" : pct(meta.ball_visible_rate ?? data.quality.ball_detection_rate)],
+    ["Detection Gaps", isRed ? "质量门禁用" : `${meta.detection_gaps ?? (data.quality.ball_missing_segments || []).length}`],
+    ["Near Dist", `${formatNumber(meta.near_distance_m ?? near.total_distance_m, 1)} m`],
+    ["Far Dist", `${formatNumber(meta.far_distance_m ?? far.total_distance_m, 1)} m`],
+    ["Max Speed", `${formatNumber(meta.max_speed_mps ?? Math.max(near.total_max_speed_mps || 0, far.total_max_speed_mps || 0), 1)} m/s`],
   ];
 
   container.innerHTML = cards
@@ -36,19 +34,16 @@ export function renderStatCards(container, data) {
 
 export function renderQualityPanel(container, data) {
   const quality = (data && data.quality) ? data.quality : data;
-  const trajectory = data.activeTrajectoryQuality || quality;
   const coverage = quality.player_coverage || {};
-  const metric10 = trajectory.evaluation?.metrics?.f1_at_10px;
-  const metric20 = trajectory.evaluation?.metrics?.f1_at_20px;
-  const errorMedian = metric10?.visible_pair_error_px?.median;
+  const qLevel = quality.ball_quality_level || "Green";
   const items = [
-    ["轨迹来源", trajectory.label || "未分类"],
-    ["F1@10px", trajectory.source_type === "reference" ? "官方参考" : (metric10 ? pct(metric10.f1) : "待重跑")],
-    ["F1@20px", trajectory.source_type === "reference" ? "官方参考" : (metric20 ? pct(metric20.f1) : "待重跑")],
-    ["位置中位误差", errorMedian === null || errorMedian === undefined ? "--" : `${formatNumber(errorMedian, 1)} px`],
-    ["近场球员检出率", pct(coverage.near)],
-    ["远场球员检出率", pct(coverage.far)],
-    ["漏检区段数", `${(trajectory.ball_missing_segments || []).length}`],
+    ["Ball Quality Level", `${qLevel}${qLevel === "Red" ? " — 球轨迹被质量门禁用" : qLevel === "Yellow" ? " — 球轨迹置信度偏低" : " — 球轨迹可信"}`],
+    ["Ball Quality Score", `${(quality.ball_quality_score || 0).toFixed(0)} / 100`],
+    ["Ball Visible Rate", pct(quality.ball_detection_rate)],
+    ["Court-mapped Shuttle Rate", pct(quality.ball_spatial_rate)],
+    ["Near Player Visible Rate", pct(coverage.near)],
+    ["Far Player Visible Rate", pct(coverage.far)],
+    ["Detection Gaps", `${(quality.ball_missing_segments || []).length}`],
   ];
 
   let html = `<div class="quality-list">` + items
@@ -56,6 +51,21 @@ export function renderQualityPanel(container, data) {
     .join("") + `</div>`;
 
   const ballData = data.ball || [];
+  const isRed = qLevel === "Red";
+
+  if (isRed) {
+    html += `
+      <div class="quality-subsections">
+        <div class="confidence-card">
+          <h3>球轨迹分析</h3>
+          <div class="red-empty-state">球轨迹因质量门被禁用，仅展示球员分析。<br>TrackNet 在本视频中的球检测不可靠，因此不展示球速和球轨迹结论。</div>
+        </div>
+      </div>
+    `;
+    container.innerHTML = html;
+    return;
+  }
+
   const totalFrames = ballData.length || 1;
   let high = 0, mid = 0, low = 0;
   for (const d of ballData) {
@@ -91,35 +101,35 @@ export function renderQualityPanel(container, data) {
     const len = seg[1] - seg[0] + 1;
     return `
       <div class="gap-item" data-frame="${seg[0]}">
-        <span class="gap-range">缺口 ${idx + 1}：帧 ${seg[0]}-${seg[1]}</span>
-        <span class="gap-time">${startS}s - ${endS}s (${len} 帧)</span>
+        <span class="gap-range">Gap ${idx + 1}: Fr ${seg[0]}-${seg[1]}</span>
+        <span class="gap-time">${startS}s - ${endS}s (${len} frames)</span>
       </div>
     `;
   }).join("");
 
-  const gapContent = gapRows.length ? gapRows : `<div class="gap-empty">当前片段未发现漏检区段。</div>`;
+  const gapContent = gapRows.length ? gapRows : `<div class="gap-empty">No missing detections found in this video.</div>`;
 
   html += `
     <div class="quality-subsections">
       <div class="confidence-card">
-        <h3>羽毛球置信度分布</h3>
+        <h3>Shuttle Confidence Distribution</h3>
         <div class="confidence-bars">
           <div class="confidence-row">
-            <span class="confidence-label">高 (&gt;=0.75)</span>
+            <span class="confidence-label">High (&gt;=0.75)</span>
             <div class="confidence-track">
               <div class="confidence-fill high" data-width="${pctHigh}"></div>
             </div>
             <span class="confidence-value">${pctHigh}%</span>
           </div>
           <div class="confidence-row">
-            <span class="confidence-label">中 (0.2-0.75)</span>
+            <span class="confidence-label">Medium (0.2-0.75)</span>
             <div class="confidence-track">
               <div class="confidence-fill mid" data-width="${pctMid}"></div>
             </div>
             <span class="confidence-value">${pctMid}%</span>
           </div>
           <div class="confidence-row">
-            <span class="confidence-label">低 (&lt;0.2)</span>
+            <span class="confidence-label">Low (&lt;0.2)</span>
             <div class="confidence-track">
               <div class="confidence-fill low" data-width="${pctLow}"></div>
             </div>
@@ -129,7 +139,7 @@ export function renderQualityPanel(container, data) {
       </div>
 
       <div class="gap-card">
-        <h3>漏检区段列表</h3>
+        <h3>Detection Gap Segments List</h3>
         <div class="gap-list-box">${gapContent}</div>
       </div>
     </div>

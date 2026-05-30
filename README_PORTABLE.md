@@ -59,6 +59,8 @@ python scripts/tools/select_court.py inputs/your_video.mp4
 python run_pipeline.py `
   --input-video "inputs\your_video.mp4" `
   --court-points "416,423,864,423,944,706,227,706" `
+  --court-length-m 13.4 `
+  --draw-court-polygon `
   --tracknet-device auto `
   --pose-device auto
 ```
@@ -75,11 +77,14 @@ python run_pipeline.py `
 python run_pipeline.py \
   --input-video "inputs/your_video.mp4" \
   --court-points "416,423,864,423,944,706,227,706" \
+  --court-length-m 13.4 \
+  --draw-court-polygon \
   --tracknet-device auto \
   --pose-device auto
 ```
 
-默认输出位置是 `output/<video_id>/`，完成后自动更新 `frontend/public/data/manifest.json`。
+默认输出位置是 `output/<video_id>/`，完成后自动更新 `frontend/public/data/manifest.json`。上述命令中的
+`--draw-court-polygon` 用于第一遍检查角点是否贴合球场；确认后生成正式展示视频时移除该开关。
 
 ## 4. 参数建议
 
@@ -87,12 +92,35 @@ python run_pipeline.py \
 | --- | --- |
 | CUDA 或 MPS 正式分析 | `--tracknet-eval-mode weight --pose-imgsz 960 --detect-interval 1` |
 | 快速检查效果 | `--tracknet-eval-mode nonoverlap --detect-interval 2` |
+| 全场转播机位 | `--court-length-m 13.4 --draw-court-polygon`，检查后正式成片移除绿色轮廓 |
+| 只分析半场画面 | `--court-length-m 6.7 --draw-court-polygon`，检查后正式成片移除绿色轮廓 |
 | 远端人物太小或漏检 | 保持或提高 `--pose-imgsz 960` |
 | 已有可信球轨迹 CSV | `--ball-csv path/to/video_ball.csv`，跳过 TrackNet 重跑 |
+| 球被广告/计分牌亮点误检 | `--filter-ball --ball-top-pad-px 160 --ball-side-pad-px 80 --ball-min-motion-score 4 --ball-max-interp-gap 2` |
 | 单独成品视频需要嵌入统计面板 | `--embedded-panels` |
 | 需要慢动作特效而非数据同步播放 | `--cinematic-fx` |
 
-`TrackNet` 阈值默认使用 `0.15`，可用 `--tracknet-threshold 0.20` 调整。遇到画面中固定亮点被误认作球时，不应只相信可见率，需要抽查轨迹是否真正随羽毛球运动。
+`TrackNet` 阈值默认使用 `0.15`，可用 `--tracknet-threshold 0.20` 调整。`0.20` 适合降低零星背景误检，但对于固定亮点锁定或完全不同的转播域，阈值本身未必有效。此时先用 `--filter-ball` 做保守显示，并在质量面板查看 `Court-mapped Shuttle Rate`；覆盖率不足时页面会隐藏不可信的球速曲线，而不是把假点当作分析结论。
+
+### 球误检视频示例
+
+```bash
+python run_pipeline.py \
+  --input-video "inputs/pro_match19_1_01_01.mp4" \
+  --ball-csv "inputs/pro_match19_1_01_01_ball.csv" \
+  --court-points "416,423,864,423,944,706,227,706" \
+  --court-length-m 13.4 \
+  --filter-ball \
+  --ball-top-pad-px 160 \
+  --ball-side-pad-px 80 \
+  --ball-min-motion-score 4 \
+  --ball-max-interp-gap 2 \
+  --draw-court-polygon \
+  --tracknet-device auto \
+  --pose-device auto
+```
+
+`--filter-ball` 是用于展示可信度的保守后处理，不替代人工真值或模型微调；它保留原始 CSV 备查，并只插值很短的缺口。
 
 ## 5. 查看 Dashboard
 

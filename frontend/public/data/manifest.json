@@ -1,589 +1,115 @@
 {
-  "generated_at": "2026-05-26T21:53:03",
-  "default_video": "pro_match17_1_02_02",
+  "generated_at": "2026-05-29T22:29:21",
+  "default_video": "short",
   "uploaded_video_meta": {
     "file_name": "前端可视化.mp4",
-    "path": "E:\\PythonProject\\pythonProject\\计算机视觉大作业\\badminton-pipeline-repro-windows-clean\\inputs\\前端可视化.mp4",
-    "source": "missing_reference_video",
-    "warning": "Uploaded reference video was not found on disk."
+    "path": "/Users/davidfang/Desktop/lida/计算机视觉/前端可视化.mp4",
+    "size_bytes": 5699268,
+    "width": 960,
+    "height": 544,
+    "fps": 25.0,
+    "frame_count": 6641,
+    "duration_s": 265.64,
+    "resolution": "960x544",
+    "codec": "H.264 / AVC",
+    "bitrate_kbps": 123.6,
+    "audio_codec": "AAC LC",
+    "audio_sample_rate_hz": 44100,
+    "audio_channels": "stereo",
+    "audio_duration_s": 265.61,
+    "source": "uploaded_reference_video"
   },
   "videos": [
     {
-      "id": "pro_match17_2_15_11",
-      "title": "pro_match17_2_15_11",
-      "fps": 29.97,
-      "frame_count": 470,
-      "duration_s": 15.68234901568235,
+      "id": "short",
+      "title": "short",
+      "fps": 21.0,
+      "frame_count": 630,
+      "duration_s": 30.0,
       "analysis_meta": {
-        "video_id": "pro_match17_2_15_11",
-        "frames": 470,
-        "fps": 29.97,
-        "duration_s": 15.68234901568235,
-        "resolution": "1280x720",
-        "ball_visible_rate": 0.9723404255319149,
-        "near_visible_rate": 1.0,
-        "far_visible_rate": 1.0,
-        "detection_gaps": 6,
-        "near_distance_m": 34.10189682206329,
-        "far_distance_m": 38.05092308095876,
-        "max_speed_mps": 9.483509530686389
+        "video_id": "short",
+        "frames": 630,
+        "fps": 21.0,
+        "duration_s": 30.0,
+        "resolution": "960x544",
+        "ball_visible_rate": 0.5634920634920635,
+        "ball_spatial_rate": 0.0,
+        "ball_filter_applied": true,
+        "ball_quality_level": "Green",
+        "ball_quality_score": 88.96,
+        "ball_low_confidence": false,
+        "near_visible_rate": 0.49047619047619045,
+        "far_visible_rate": 0.773015873015873,
+        "detection_gaps": 13,
+        "near_distance_m": 42.13001344752794,
+        "far_distance_m": 81.11353040260414,
+        "max_speed_mps": 9.043469768248734
       },
-      "updated_at": "2026-05-25T10:46:22",
+      "updated_at": "2026-05-29T21:54:37.107377",
       "files": {
-        "analysis": "videos/pro_match17_2_15_11/analysis.json",
-        "ball": "videos/pro_match17_2_15_11/ball.csv",
-        "players": "videos/pro_match17_2_15_11/players.csv",
-        "motion": "videos/pro_match17_2_15_11/motion.csv",
-        "quality": "videos/pro_match17_2_15_11/quality.json",
-        "original_video": "videos/pro_match17_2_15_11/original.webm",
-        "overlay_video": "videos/pro_match17_2_15_11/overlay.mp4",
-        "final_video": "videos/pro_match17_2_15_11/final.mp4",
-        "ball_modes": {
-          "reference": "videos/pro_match17_2_15_11/ball_reference.csv"
-        }
+        "analysis": "videos/short/analysis.json",
+        "ball": "videos/short/ball.csv",
+        "players": "videos/short/players.csv",
+        "motion": "videos/short/motion.csv",
+        "quality": "videos/short/quality.json",
+        "original_video": "videos/short/original.mp4",
+        "overlay_video": "videos/short/overlay.mp4",
+        "final_video": "videos/short/final.mp4"
       },
       "quality": {
-        "ball_detection_rate": 0.9723404255319149,
-        "default_trajectory_mode": "reference",
-        "trajectory_modes": {
-          "reference": {
-            "label": "官方参考",
-            "evaluation": null,
-            "ball_detection_rate": 0.9723404255319149
-          }
-        },
-        "near_player_coverage": 1.0,
-        "far_player_coverage": 1.0,
-        "warning_count": 0
+        "ball_detection_rate": 0.5634920634920635,
+        "ball_quality_level": "Green",
+        "ball_quality_score": 88.96,
+        "ball_low_confidence": false,
+        "near_player_coverage": 0.49047619047619045,
+        "far_player_coverage": 0.773015873015873,
+        "warning_count": 2
       }
     },
     {
-      "id": "pro_match17_1_15_13",
-      "title": "pro_match17_1_15_13",
-      "fps": 29.97,
-      "frame_count": 531,
-      "duration_s": 17.71771771771772,
+      "id": "1_00_01",
+      "title": "1_00_01",
+      "fps": 30.0,
+      "frame_count": 225,
+      "duration_s": 7.5,
       "analysis_meta": {
-        "video_id": "pro_match17_1_15_13",
-        "frames": 531,
-        "fps": 29.97,
-        "duration_s": 17.71771771771772,
+        "video_id": "1_00_01",
+        "frames": 225,
+        "fps": 30.0,
+        "duration_s": 7.5,
         "resolution": "1280x720",
-        "ball_visible_rate": 0.9830508474576272,
-        "near_visible_rate": 0.9566854990583804,
-        "far_visible_rate": 0.992467043314501,
-        "detection_gaps": 8,
-        "near_distance_m": 38.229660773902054,
-        "far_distance_m": 47.054715108907104,
-        "max_speed_mps": 9.457779081783704
-      },
-      "updated_at": "2026-05-26T17:48:20.238247",
-      "files": {
-        "analysis": "videos/pro_match17_1_15_13/analysis.json",
-        "ball": "videos/pro_match17_1_15_13/ball.csv",
-        "players": "videos/pro_match17_1_15_13/players.csv",
-        "motion": "videos/pro_match17_1_15_13/motion.csv",
-        "quality": "videos/pro_match17_1_15_13/quality.json",
-        "original_video": "videos/pro_match17_1_15_13/original.webm",
-        "overlay_video": "videos/pro_match17_1_15_13/overlay.webm",
-        "final_video": "videos/pro_match17_1_15_13/final.webm",
-        "ball_modes": {
-          "reference": "videos/pro_match17_1_15_13/ball_reference.csv"
-        }
-      },
-      "quality": {
-        "ball_detection_rate": 0.9830508474576272,
-        "default_trajectory_mode": "reference",
-        "trajectory_modes": {
-          "reference": {
-            "label": "官方参考",
-            "evaluation": null,
-            "ball_detection_rate": 0.9830508474576272
-          }
-        },
-        "near_player_coverage": 0.9566854990583804,
-        "far_player_coverage": 0.992467043314501,
-        "warning_count": 1
-      }
-    },
-    {
-      "id": "pro_match17_2_01_01",
-      "title": "pro_match17_2_01_01",
-      "fps": 29.97,
-      "frame_count": 531,
-      "duration_s": 17.71771771771772,
-      "analysis_meta": {
-        "video_id": "pro_match17_2_01_01",
-        "frames": 531,
-        "fps": 29.97,
-        "duration_s": 17.71771771771772,
-        "resolution": "1280x720",
-        "ball_visible_rate": 0.839924670433145,
+        "ball_visible_rate": 0.6844444444444444,
+        "ball_spatial_rate": 0.04888888888888889,
+        "ball_filter_applied": true,
+        "ball_quality_level": "Green",
+        "ball_quality_score": 94.67,
+        "ball_low_confidence": false,
         "near_visible_rate": 1.0,
-        "far_visible_rate": 0.9887005649717514,
-        "detection_gaps": 23,
-        "near_distance_m": 41.022764230309285,
-        "far_distance_m": 47.987589451718854,
-        "max_speed_mps": 9.46795625774616
+        "far_visible_rate": 0.2088888888888889,
+        "detection_gaps": 3,
+        "near_distance_m": 11.862255491404301,
+        "far_distance_m": 4.198828480614615,
+        "max_speed_mps": 8.342634722820932
       },
-      "updated_at": "2026-05-26T17:50:25.409956",
+      "updated_at": "2026-05-29T21:51:41.093379",
       "files": {
-        "analysis": "videos/pro_match17_2_01_01/analysis.json",
-        "ball": "videos/pro_match17_2_01_01/ball.csv",
-        "players": "videos/pro_match17_2_01_01/players.csv",
-        "motion": "videos/pro_match17_2_01_01/motion.csv",
-        "quality": "videos/pro_match17_2_01_01/quality.json",
-        "original_video": "videos/pro_match17_2_01_01/original.webm",
-        "overlay_video": "videos/pro_match17_2_01_01/overlay.webm",
-        "final_video": "videos/pro_match17_2_01_01/final.webm",
-        "ball_modes": {
-          "reference": "videos/pro_match17_2_01_01/ball_reference.csv"
-        }
+        "analysis": "videos/1_00_01/analysis.json",
+        "ball": "videos/1_00_01/ball.csv",
+        "players": "videos/1_00_01/players.csv",
+        "motion": "videos/1_00_01/motion.csv",
+        "quality": "videos/1_00_01/quality.json",
+        "original_video": "videos/1_00_01/original.mp4",
+        "overlay_video": "videos/1_00_01/overlay.mp4",
+        "final_video": "videos/1_00_01/final.mp4"
       },
       "quality": {
-        "ball_detection_rate": 0.839924670433145,
-        "default_trajectory_mode": "reference",
-        "trajectory_modes": {
-          "reference": {
-            "label": "官方参考",
-            "evaluation": null,
-            "ball_detection_rate": 0.839924670433145
-          }
-        },
+        "ball_detection_rate": 0.6844444444444444,
+        "ball_quality_level": "Green",
+        "ball_quality_score": 94.67,
+        "ball_low_confidence": false,
         "near_player_coverage": 1.0,
-        "far_player_coverage": 0.9887005649717514,
-        "warning_count": 1
-      }
-    },
-    {
-      "id": "pro_match17_2_08_05",
-      "title": "pro_match17_2_08_05",
-      "fps": 29.97,
-      "frame_count": 527,
-      "duration_s": 17.584250917584253,
-      "analysis_meta": {
-        "video_id": "pro_match17_2_08_05",
-        "frames": 527,
-        "fps": 29.97,
-        "duration_s": 17.584250917584253,
-        "resolution": "1280x720",
-        "ball_visible_rate": 0.9582542694497154,
-        "near_visible_rate": 1.0,
-        "far_visible_rate": 1.0,
-        "detection_gaps": 16,
-        "near_distance_m": 42.33537555535148,
-        "far_distance_m": 44.754204783390065,
-        "max_speed_mps": 9.441790244065489
-      },
-      "updated_at": "2026-05-26T17:52:31.821275",
-      "files": {
-        "analysis": "videos/pro_match17_2_08_05/analysis.json",
-        "ball": "videos/pro_match17_2_08_05/ball.csv",
-        "players": "videos/pro_match17_2_08_05/players.csv",
-        "motion": "videos/pro_match17_2_08_05/motion.csv",
-        "quality": "videos/pro_match17_2_08_05/quality.json",
-        "original_video": "videos/pro_match17_2_08_05/original.webm",
-        "overlay_video": "videos/pro_match17_2_08_05/overlay.webm",
-        "final_video": "videos/pro_match17_2_08_05/final.webm",
-        "ball_modes": {
-          "reference": "videos/pro_match17_2_08_05/ball_reference.csv"
-        }
-      },
-      "quality": {
-        "ball_detection_rate": 0.9582542694497154,
-        "default_trajectory_mode": "reference",
-        "trajectory_modes": {
-          "reference": {
-            "label": "官方参考",
-            "evaluation": null,
-            "ball_detection_rate": 0.9582542694497154
-          }
-        },
-        "near_player_coverage": 1.0,
-        "far_player_coverage": 1.0,
-        "warning_count": 1
-      }
-    },
-    {
-      "id": "pro_match19_1_01_01",
-      "title": "pro_match19_1_01_01",
-      "fps": 29.97,
-      "frame_count": 460,
-      "duration_s": 15.348682015348682,
-      "analysis_meta": {
-        "video_id": "pro_match19_1_01_01",
-        "frames": 460,
-        "fps": 29.97,
-        "duration_s": 15.348682015348682,
-        "resolution": "1280x720",
-        "ball_visible_rate": 0.8434782608695652,
-        "near_visible_rate": 1.0,
-        "far_visible_rate": 0.9869565217391304,
-        "detection_gaps": 6,
-        "near_distance_m": 40.92792611768868,
-        "far_distance_m": 38.91060592763864,
-        "max_speed_mps": 9.49439258980761
-      },
-      "updated_at": "2026-05-26T21:31:40.089912",
-      "files": {
-        "analysis": "videos/pro_match19_1_01_01/analysis.json",
-        "ball": "videos/pro_match19_1_01_01/ball.csv",
-        "players": "videos/pro_match19_1_01_01/players.csv",
-        "motion": "videos/pro_match19_1_01_01/motion.csv",
-        "quality": "videos/pro_match19_1_01_01/quality.json",
-        "original_video": "videos/pro_match19_1_01_01/original.webm",
-        "overlay_video": "videos/pro_match19_1_01_01/overlay.mp4",
-        "final_video": "videos/pro_match19_1_01_01/final.mp4",
-        "ball_modes": {
-          "reference": "videos/pro_match19_1_01_01/ball_reference.csv",
-          "raw_prediction": "videos/pro_match19_1_01_01/ball_raw_prediction.csv",
-          "filtered_prediction": "videos/pro_match19_1_01_01/ball_filtered_prediction.csv"
-        }
-      },
-      "quality": {
-        "ball_detection_rate": 0.8434782608695652,
-        "default_trajectory_mode": "reference",
-        "trajectory_modes": {
-          "reference": {
-            "label": "官方参考",
-            "evaluation": null,
-            "ball_detection_rate": 0.8434782608695652
-          },
-          "raw_prediction": {
-            "label": "原始预测",
-            "evaluation": {
-              "video_id": "pro_match19_1_01_01",
-              "source_type": "raw_prediction",
-              "ground_truth": "E:\\PythonProject\\pythonProject\\计算机视觉大作业\\badminton-pipeline-repro-windows-clean\\inputs\\pro_match19_1_01_01_ball.csv",
-              "prediction": "E:\\PythonProject\\pythonProject\\计算机视觉大作业\\badminton-pipeline-repro-windows-clean\\output\\pro_match19_1_01_01\\tracknet_v3_result_regen\\pro_match19_1_01_01_ball.csv",
-              "integrity": {
-                "valid": true,
-                "row_count": 460,
-                "expected_frame_count": 460,
-                "duplicate_frames": [],
-                "missing_frames": [],
-                "extra_frames": []
-              },
-              "frame_count": 460,
-              "visible_ground_truth_frames": 388,
-              "visible_prediction_frames": 460,
-              "visualized_prediction_frames": 460,
-              "static_prediction_ratio": 0.9956521739130435,
-              "longest_visible_miss_run": 0,
-              "metrics": {
-                "f1_at_10px": {
-                  "tolerance_px": 10.0,
-                  "counts": {
-                    "TP": 0,
-                    "TN": 0,
-                    "FP1": 388,
-                    "FP2": 72,
-                    "FN": 0
-                  },
-                  "accuracy": 0.0,
-                  "precision": 0.0,
-                  "recall": 0.0,
-                  "f1": 0.0,
-                  "localized_error_px": {
-                    "median": null,
-                    "p95": null
-                  },
-                  "visible_pair_error_px": {
-                    "median": 459.3428898984255,
-                    "p95": 718.6747209292278
-                  }
-                },
-                "f1_at_20px": {
-                  "tolerance_px": 20.0,
-                  "counts": {
-                    "TP": 0,
-                    "TN": 0,
-                    "FP1": 388,
-                    "FP2": 72,
-                    "FN": 0
-                  },
-                  "accuracy": 0.0,
-                  "precision": 0.0,
-                  "recall": 0.0,
-                  "f1": 0.0,
-                  "localized_error_px": {
-                    "median": null,
-                    "p95": null
-                  },
-                  "visible_pair_error_px": {
-                    "median": 459.3428898984255,
-                    "p95": 718.6747209292278
-                  }
-                }
-              }
-            },
-            "ball_detection_rate": 1.0
-          },
-          "filtered_prediction": {
-            "label": "过滤实验（未达标）",
-            "evaluation": {
-              "video_id": "pro_match19_1_01_01",
-              "source_type": "filtered_prediction",
-              "ground_truth": "E:\\PythonProject\\pythonProject\\计算机视觉大作业\\badminton-pipeline-repro-windows-clean\\inputs\\pro_match19_1_01_01_ball.csv",
-              "prediction": "E:\\PythonProject\\pythonProject\\计算机视觉大作业\\badminton-pipeline-repro-windows-clean\\output\\pro_match19_1_01_01\\trajectories\\filtered_prediction.csv",
-              "integrity": {
-                "valid": true,
-                "row_count": 460,
-                "expected_frame_count": 460,
-                "duplicate_frames": [],
-                "missing_frames": [],
-                "extra_frames": []
-              },
-              "frame_count": 460,
-              "visible_ground_truth_frames": 388,
-              "visible_prediction_frames": 410,
-              "visualized_prediction_frames": 460,
-              "static_prediction_ratio": 0.9951219512195122,
-              "longest_visible_miss_run": 1,
-              "metrics": {
-                "f1_at_10px": {
-                  "tolerance_px": 10.0,
-                  "counts": {
-                    "TP": 0,
-                    "TN": 8,
-                    "FP1": 346,
-                    "FP2": 64,
-                    "FN": 42
-                  },
-                  "accuracy": 0.017391304347826087,
-                  "precision": 0.0,
-                  "recall": 0.0,
-                  "f1": 0.0,
-                  "localized_error_px": {
-                    "median": null,
-                    "p95": null
-                  },
-                  "visible_pair_error_px": {
-                    "median": 460.1638402330246,
-                    "p95": 713.9303588147577
-                  }
-                },
-                "f1_at_20px": {
-                  "tolerance_px": 20.0,
-                  "counts": {
-                    "TP": 0,
-                    "TN": 8,
-                    "FP1": 346,
-                    "FP2": 64,
-                    "FN": 42
-                  },
-                  "accuracy": 0.017391304347826087,
-                  "precision": 0.0,
-                  "recall": 0.0,
-                  "f1": 0.0,
-                  "localized_error_px": {
-                    "median": null,
-                    "p95": null
-                  },
-                  "visible_pair_error_px": {
-                    "median": 460.1638402330246,
-                    "p95": 713.9303588147577
-                  }
-                }
-              }
-            },
-            "ball_detection_rate": 1.0
-          }
-        },
-        "near_player_coverage": 1.0,
-        "far_player_coverage": 0.9869565217391304,
-        "warning_count": 0
-      }
-    },
-    {
-      "id": "pro_match17_2_18_11",
-      "title": "pro_match17_2_18_11",
-      "fps": 29.97,
-      "frame_count": 501,
-      "duration_s": 16.716716716716718,
-      "analysis_meta": {
-        "video_id": "pro_match17_2_18_11",
-        "frames": 501,
-        "fps": 29.97,
-        "duration_s": 16.716716716716718,
-        "resolution": "1280x720",
-        "ball_visible_rate": 0.9740518962075848,
-        "near_visible_rate": 1.0,
-        "far_visible_rate": 1.0,
-        "detection_gaps": 10,
-        "near_distance_m": 37.5602771202879,
-        "far_distance_m": 52.49098908203184,
-        "max_speed_mps": 9.372992433185166
-      },
-      "updated_at": "2026-05-26T21:36:44.251676",
-      "files": {
-        "analysis": "videos/pro_match17_2_18_11/analysis.json",
-        "ball": "videos/pro_match17_2_18_11/ball.csv",
-        "players": "videos/pro_match17_2_18_11/players.csv",
-        "motion": "videos/pro_match17_2_18_11/motion.csv",
-        "quality": "videos/pro_match17_2_18_11/quality.json",
-        "original_video": "videos/pro_match17_2_18_11/original.webm",
-        "overlay_video": "videos/pro_match17_2_18_11/overlay.webm",
-        "final_video": "videos/pro_match17_2_18_11/final.webm",
-        "ball_modes": {
-          "reference": "videos/pro_match17_2_18_11/ball_reference.csv",
-          "raw_prediction": "videos/pro_match17_2_18_11/ball_raw_prediction.csv",
-          "filtered_prediction": "videos/pro_match17_2_18_11/ball_filtered_prediction.csv"
-        }
-      },
-      "quality": {
-        "ball_detection_rate": 0.9740518962075848,
-        "default_trajectory_mode": "reference",
-        "trajectory_modes": {
-          "reference": {
-            "label": "官方参考",
-            "evaluation": null,
-            "ball_detection_rate": 0.9740518962075848
-          },
-          "raw_prediction": {
-            "label": "原始预测",
-            "evaluation": {
-              "video_id": "pro_match17_2_18_11",
-              "source_type": "raw_prediction",
-              "ground_truth": "E:\\PythonProject\\pythonProject\\计算机视觉大作业\\badminton-pipeline-repro-windows-clean\\inputs\\pro_match17_2_18_11_ball.csv",
-              "prediction": "E:\\PythonProject\\pythonProject\\计算机视觉大作业\\badminton-pipeline-repro-windows-clean\\output\\pro_match17_2_18_11\\tracknet_v3_result_regen\\pro_match17_2_18_11_ball.csv",
-              "integrity": {
-                "valid": true,
-                "row_count": 501,
-                "expected_frame_count": 501,
-                "duplicate_frames": [],
-                "missing_frames": [],
-                "extra_frames": []
-              },
-              "frame_count": 501,
-              "visible_ground_truth_frames": 488,
-              "visible_prediction_frames": 324,
-              "visualized_prediction_frames": 324,
-              "static_prediction_ratio": 0.13271604938271606,
-              "longest_visible_miss_run": 67,
-              "metrics": {
-                "f1_at_10px": {
-                  "tolerance_px": 10.0,
-                  "counts": {
-                    "TP": 110,
-                    "TN": 8,
-                    "FP1": 209,
-                    "FP2": 5,
-                    "FN": 169
-                  },
-                  "accuracy": 0.23552894211576847,
-                  "precision": 0.3395061728395062,
-                  "recall": 0.3942652329749104,
-                  "f1": 0.3648424543946932,
-                  "localized_error_px": {
-                    "median": 3.1622776601683795,
-                    "p95": 7.148086918349851
-                  },
-                  "visible_pair_error_px": {
-                    "median": 416.5249092191246,
-                    "p95": 782.4273759194984
-                  }
-                },
-                "f1_at_20px": {
-                  "tolerance_px": 20.0,
-                  "counts": {
-                    "TP": 120,
-                    "TN": 8,
-                    "FP1": 199,
-                    "FP2": 5,
-                    "FN": 169
-                  },
-                  "accuracy": 0.2554890219560878,
-                  "precision": 0.37037037037037035,
-                  "recall": 0.41522491349480967,
-                  "f1": 0.3915171288743882,
-                  "localized_error_px": {
-                    "median": 4.0,
-                    "p95": 15.265973573388978
-                  },
-                  "visible_pair_error_px": {
-                    "median": 416.5249092191246,
-                    "p95": 782.4273759194984
-                  }
-                }
-              }
-            },
-            "ball_detection_rate": 0.6467065868263473
-          },
-          "filtered_prediction": {
-            "label": "优化预测",
-            "evaluation": {
-              "video_id": "pro_match17_2_18_11",
-              "source_type": "filtered_prediction",
-              "ground_truth": "E:\\PythonProject\\pythonProject\\计算机视觉大作业\\badminton-pipeline-repro-windows-clean\\inputs\\pro_match17_2_18_11_ball.csv",
-              "prediction": "E:\\PythonProject\\pythonProject\\计算机视觉大作业\\badminton-pipeline-repro-windows-clean\\output\\pro_match17_2_18_11\\trajectories\\filtered_prediction.csv",
-              "integrity": {
-                "valid": true,
-                "row_count": 501,
-                "expected_frame_count": 501,
-                "duplicate_frames": [],
-                "missing_frames": [],
-                "extra_frames": []
-              },
-              "frame_count": 501,
-              "visible_ground_truth_frames": 488,
-              "visible_prediction_frames": 204,
-              "visualized_prediction_frames": 244,
-              "static_prediction_ratio": 0.049019607843137254,
-              "longest_visible_miss_run": 68,
-              "metrics": {
-                "f1_at_10px": {
-                  "tolerance_px": 10.0,
-                  "counts": {
-                    "TP": 110,
-                    "TN": 13,
-                    "FP1": 94,
-                    "FP2": 0,
-                    "FN": 284
-                  },
-                  "accuracy": 0.24550898203592814,
-                  "precision": 0.5392156862745098,
-                  "recall": 0.27918781725888325,
-                  "f1": 0.3678929765886288,
-                  "localized_error_px": {
-                    "median": 3.1622776601683795,
-                    "p95": 7.148086918349851
-                  },
-                  "visible_pair_error_px": {
-                    "median": 6.8896358721824225,
-                    "p95": 478.10838379929675
-                  }
-                },
-                "f1_at_20px": {
-                  "tolerance_px": 20.0,
-                  "counts": {
-                    "TP": 120,
-                    "TN": 13,
-                    "FP1": 84,
-                    "FP2": 0,
-                    "FN": 284
-                  },
-                  "accuracy": 0.2654690618762475,
-                  "precision": 0.5882352941176471,
-                  "recall": 0.297029702970297,
-                  "f1": 0.39473684210526316,
-                  "localized_error_px": {
-                    "median": 4.0,
-                    "p95": 15.265973573388978
-                  },
-                  "visible_pair_error_px": {
-                    "median": 6.8896358721824225,
-                    "p95": 478.10838379929675
-                  }
-                }
-              }
-            },
-            "ball_detection_rate": 0.4870259481037924
-          }
-        },
-        "near_player_coverage": 1.0,
-        "far_player_coverage": 1.0,
-        "warning_count": 0
+        "far_player_coverage": 0.2088888888888889,
+        "warning_count": 2
       }
     },
     {
@@ -598,183 +124,314 @@
         "fps": 29.97,
         "duration_s": 12.412412412412413,
         "resolution": "1280x720",
-        "ball_visible_rate": 0.8413978494623656,
+        "ball_visible_rate": 0.6559139784946236,
+        "ball_spatial_rate": 0.18548387096774194,
+        "ball_filter_applied": true,
+        "ball_quality_level": "Green",
+        "ball_quality_score": 93.14,
+        "ball_low_confidence": false,
         "near_visible_rate": 1.0,
-        "far_visible_rate": 0.9435483870967742,
-        "detection_gaps": 15,
-        "near_distance_m": 29.25372983272628,
-        "far_distance_m": 32.258055446891646,
-        "max_speed_mps": 9.467464735440554
+        "far_visible_rate": 0.9381720430107527,
+        "detection_gaps": 6,
+        "near_distance_m": 30.6100539477569,
+        "far_distance_m": 32.59192498128415,
+        "max_speed_mps": 8.998179353939017
       },
-      "updated_at": "2026-05-26T21:41:17.287360",
+      "updated_at": "2026-05-29T21:51:57.321871",
       "files": {
         "analysis": "videos/pro_match17_1_02_02/analysis.json",
         "ball": "videos/pro_match17_1_02_02/ball.csv",
         "players": "videos/pro_match17_1_02_02/players.csv",
         "motion": "videos/pro_match17_1_02_02/motion.csv",
         "quality": "videos/pro_match17_1_02_02/quality.json",
-        "original_video": "videos/pro_match17_1_02_02/original.webm",
-        "overlay_video": "videos/pro_match17_1_02_02/overlay.webm",
-        "final_video": "videos/pro_match17_1_02_02/final.webm",
-        "ball_modes": {
-          "reference": "videos/pro_match17_1_02_02/ball_reference.csv",
-          "raw_prediction": "videos/pro_match17_1_02_02/ball_raw_prediction.csv",
-          "filtered_prediction": "videos/pro_match17_1_02_02/ball_filtered_prediction.csv"
-        }
+        "original_video": "videos/pro_match17_1_02_02/original.mp4",
+        "overlay_video": "videos/pro_match17_1_02_02/overlay.mp4",
+        "final_video": "videos/pro_match17_1_02_02/final.mp4"
       },
       "quality": {
-        "ball_detection_rate": 0.8413978494623656,
-        "default_trajectory_mode": "reference",
-        "trajectory_modes": {
-          "reference": {
-            "label": "官方参考",
-            "evaluation": null,
-            "ball_detection_rate": 0.8413978494623656
-          },
-          "raw_prediction": {
-            "label": "原始预测",
-            "evaluation": {
-              "video_id": "pro_match17_1_02_02",
-              "source_type": "raw_prediction",
-              "ground_truth": "E:\\PythonProject\\pythonProject\\计算机视觉大作业\\badminton-pipeline-repro-windows-clean\\inputs\\pro_match17_1_02_02_ball.csv",
-              "prediction": "E:\\PythonProject\\pythonProject\\计算机视觉大作业\\badminton-pipeline-repro-windows-clean\\output\\pro_match17_1_02_02\\trajectories\\raw_prediction.csv",
-              "integrity": {
-                "valid": true,
-                "row_count": 372,
-                "expected_frame_count": 372,
-                "duplicate_frames": [],
-                "missing_frames": [],
-                "extra_frames": []
-              },
-              "frame_count": 372,
-              "visible_ground_truth_frames": 313,
-              "visible_prediction_frames": 372,
-              "visualized_prediction_frames": 372,
-              "static_prediction_ratio": 0.2903225806451613,
-              "longest_visible_miss_run": 0,
-              "metrics": {
-                "f1_at_10px": {
-                  "tolerance_px": 10.0,
-                  "counts": {
-                    "TP": 0,
-                    "TN": 0,
-                    "FP1": 313,
-                    "FP2": 59,
-                    "FN": 0
-                  },
-                  "accuracy": 0.0,
-                  "precision": 0.0,
-                  "recall": 0.0,
-                  "f1": 0.0,
-                  "localized_error_px": {
-                    "median": null,
-                    "p95": null
-                  },
-                  "visible_pair_error_px": {
-                    "median": 612.2981299987777,
-                    "p95": 781.5594177637914
-                  }
-                },
-                "f1_at_20px": {
-                  "tolerance_px": 20.0,
-                  "counts": {
-                    "TP": 0,
-                    "TN": 0,
-                    "FP1": 313,
-                    "FP2": 59,
-                    "FN": 0
-                  },
-                  "accuracy": 0.0,
-                  "precision": 0.0,
-                  "recall": 0.0,
-                  "f1": 0.0,
-                  "localized_error_px": {
-                    "median": null,
-                    "p95": null
-                  },
-                  "visible_pair_error_px": {
-                    "median": 612.2981299987777,
-                    "p95": 781.5594177637914
-                  }
-                }
-              }
-            },
-            "ball_detection_rate": 1.0
-          },
-          "filtered_prediction": {
-            "label": "过滤实验（未达标）",
-            "evaluation": {
-              "video_id": "pro_match17_1_02_02",
-              "source_type": "filtered_prediction",
-              "ground_truth": "E:\\PythonProject\\pythonProject\\计算机视觉大作业\\badminton-pipeline-repro-windows-clean\\inputs\\pro_match17_1_02_02_ball.csv",
-              "prediction": "E:\\PythonProject\\pythonProject\\计算机视觉大作业\\badminton-pipeline-repro-windows-clean\\output\\pro_match17_1_02_02\\trajectories\\filtered_prediction.csv",
-              "integrity": {
-                "valid": true,
-                "row_count": 372,
-                "expected_frame_count": 372,
-                "duplicate_frames": [],
-                "missing_frames": [],
-                "extra_frames": []
-              },
-              "frame_count": 372,
-              "visible_ground_truth_frames": 313,
-              "visible_prediction_frames": 372,
-              "visualized_prediction_frames": 372,
-              "static_prediction_ratio": 0.23387096774193547,
-              "longest_visible_miss_run": 0,
-              "metrics": {
-                "f1_at_10px": {
-                  "tolerance_px": 10.0,
-                  "counts": {
-                    "TP": 17,
-                    "TN": 0,
-                    "FP1": 296,
-                    "FP2": 59,
-                    "FN": 0
-                  },
-                  "accuracy": 0.0456989247311828,
-                  "precision": 0.0456989247311828,
-                  "recall": 1.0,
-                  "f1": 0.08740359897172237,
-                  "localized_error_px": {
-                    "median": 3.1622776601683795,
-                    "p95": 8.347172794739866
-                  },
-                  "visible_pair_error_px": {
-                    "median": 613.2943828211702,
-                    "p95": 781.8115048647891
-                  }
-                },
-                "f1_at_20px": {
-                  "tolerance_px": 20.0,
-                  "counts": {
-                    "TP": 23,
-                    "TN": 0,
-                    "FP1": 290,
-                    "FP2": 59,
-                    "FN": 0
-                  },
-                  "accuracy": 0.06182795698924731,
-                  "precision": 0.06182795698924731,
-                  "recall": 1.0,
-                  "f1": 0.11645569620253166,
-                  "localized_error_px": {
-                    "median": 3.605551275463989,
-                    "p95": 16.878865198959762
-                  },
-                  "visible_pair_error_px": {
-                    "median": 613.2943828211702,
-                    "p95": 781.8115048647891
-                  }
-                }
-              }
-            },
-            "ball_detection_rate": 1.0
-          }
-        },
+        "ball_detection_rate": 0.6559139784946236,
+        "ball_quality_level": "Green",
+        "ball_quality_score": 93.14,
+        "ball_low_confidence": false,
         "near_player_coverage": 1.0,
-        "far_player_coverage": 0.9435483870967742,
-        "warning_count": 0
+        "far_player_coverage": 0.9381720430107527,
+        "warning_count": 2
+      }
+    },
+    {
+      "id": "pro_match17_1_15_13",
+      "title": "pro_match17_1_15_13",
+      "fps": 29.97,
+      "frame_count": 531,
+      "duration_s": 17.71771771771772,
+      "analysis_meta": {
+        "video_id": "pro_match17_1_15_13",
+        "frames": 531,
+        "fps": 29.97,
+        "duration_s": 17.71771771771772,
+        "resolution": "1280x720",
+        "ball_visible_rate": 0.7627118644067796,
+        "ball_spatial_rate": 0.3295668549905838,
+        "ball_filter_applied": true,
+        "ball_quality_level": "Green",
+        "ball_quality_score": 93.84,
+        "ball_low_confidence": false,
+        "near_visible_rate": 0.9566854990583804,
+        "far_visible_rate": 0.9849340866290018,
+        "detection_gaps": 9,
+        "near_distance_m": 38.043207713724875,
+        "far_distance_m": 43.20960801654967,
+        "max_speed_mps": 9.192546913741381
+      },
+      "updated_at": "2026-05-29T21:52:21.506317",
+      "files": {
+        "analysis": "videos/pro_match17_1_15_13/analysis.json",
+        "ball": "videos/pro_match17_1_15_13/ball.csv",
+        "players": "videos/pro_match17_1_15_13/players.csv",
+        "motion": "videos/pro_match17_1_15_13/motion.csv",
+        "quality": "videos/pro_match17_1_15_13/quality.json",
+        "original_video": "videos/pro_match17_1_15_13/original.mp4",
+        "overlay_video": "videos/pro_match17_1_15_13/overlay.mp4",
+        "final_video": "videos/pro_match17_1_15_13/final.mp4"
+      },
+      "quality": {
+        "ball_detection_rate": 0.7627118644067796,
+        "ball_quality_level": "Green",
+        "ball_quality_score": 93.84,
+        "ball_low_confidence": false,
+        "near_player_coverage": 0.9566854990583804,
+        "far_player_coverage": 0.9849340866290018,
+        "warning_count": 2
+      }
+    },
+    {
+      "id": "pro_match17_2_01_01",
+      "title": "pro_match17_2_01_01",
+      "fps": 29.97,
+      "frame_count": 531,
+      "duration_s": 17.71771771771772,
+      "analysis_meta": {
+        "video_id": "pro_match17_2_01_01",
+        "frames": 531,
+        "fps": 29.97,
+        "duration_s": 17.71771771771772,
+        "resolution": "1280x720",
+        "ball_visible_rate": 0.7137476459510358,
+        "ball_spatial_rate": 0.11487758945386065,
+        "ball_filter_applied": true,
+        "ball_quality_level": "Green",
+        "ball_quality_score": 94.96,
+        "ball_low_confidence": false,
+        "near_visible_rate": 1.0,
+        "far_visible_rate": 0.8813559322033898,
+        "detection_gaps": 8,
+        "near_distance_m": 43.25236742476211,
+        "far_distance_m": 45.946030552181874,
+        "max_speed_mps": 9.460900838896608
+      },
+      "updated_at": "2026-05-29T21:52:44.890639",
+      "files": {
+        "analysis": "videos/pro_match17_2_01_01/analysis.json",
+        "ball": "videos/pro_match17_2_01_01/ball.csv",
+        "players": "videos/pro_match17_2_01_01/players.csv",
+        "motion": "videos/pro_match17_2_01_01/motion.csv",
+        "quality": "videos/pro_match17_2_01_01/quality.json",
+        "original_video": "videos/pro_match17_2_01_01/original.mp4",
+        "overlay_video": "videos/pro_match17_2_01_01/overlay.mp4",
+        "final_video": "videos/pro_match17_2_01_01/final.mp4"
+      },
+      "quality": {
+        "ball_detection_rate": 0.7137476459510358,
+        "ball_quality_level": "Green",
+        "ball_quality_score": 94.96,
+        "ball_low_confidence": false,
+        "near_player_coverage": 1.0,
+        "far_player_coverage": 0.8813559322033898,
+        "warning_count": 2
+      }
+    },
+    {
+      "id": "pro_match17_2_08_05",
+      "title": "pro_match17_2_08_05",
+      "fps": 29.97,
+      "frame_count": 527,
+      "duration_s": 17.584250917584253,
+      "analysis_meta": {
+        "video_id": "pro_match17_2_08_05",
+        "frames": 527,
+        "fps": 29.97,
+        "duration_s": 17.584250917584253,
+        "resolution": "1280x720",
+        "ball_visible_rate": 0.6489563567362429,
+        "ball_spatial_rate": 0.14990512333965844,
+        "ball_filter_applied": true,
+        "ball_quality_level": "Green",
+        "ball_quality_score": 93.53,
+        "ball_low_confidence": false,
+        "near_visible_rate": 1.0,
+        "far_visible_rate": 0.9981024667931688,
+        "detection_gaps": 9,
+        "near_distance_m": 44.12345454821157,
+        "far_distance_m": 45.99283495802028,
+        "max_speed_mps": 9.461253867680655
+      },
+      "updated_at": "2026-05-29T21:53:09.073804",
+      "files": {
+        "analysis": "videos/pro_match17_2_08_05/analysis.json",
+        "ball": "videos/pro_match17_2_08_05/ball.csv",
+        "players": "videos/pro_match17_2_08_05/players.csv",
+        "motion": "videos/pro_match17_2_08_05/motion.csv",
+        "quality": "videos/pro_match17_2_08_05/quality.json",
+        "original_video": "videos/pro_match17_2_08_05/original.mp4",
+        "overlay_video": "videos/pro_match17_2_08_05/overlay.mp4",
+        "final_video": "videos/pro_match17_2_08_05/final.mp4"
+      },
+      "quality": {
+        "ball_detection_rate": 0.6489563567362429,
+        "ball_quality_level": "Green",
+        "ball_quality_score": 93.53,
+        "ball_low_confidence": false,
+        "near_player_coverage": 1.0,
+        "far_player_coverage": 0.9981024667931688,
+        "warning_count": 2
+      }
+    },
+    {
+      "id": "pro_match17_2_15_11",
+      "title": "pro_match17_2_15_11",
+      "fps": 29.97,
+      "frame_count": 470,
+      "duration_s": 15.68234901568235,
+      "analysis_meta": {
+        "video_id": "pro_match17_2_15_11",
+        "frames": 470,
+        "fps": 29.97,
+        "duration_s": 15.68234901568235,
+        "resolution": "1280x720",
+        "ball_visible_rate": 0.8021276595744681,
+        "ball_spatial_rate": 0.30638297872340425,
+        "ball_filter_applied": true,
+        "ball_quality_level": "Green",
+        "ball_quality_score": 95.24,
+        "ball_low_confidence": false,
+        "near_visible_rate": 1.0,
+        "far_visible_rate": 0.9702127659574468,
+        "detection_gaps": 6,
+        "near_distance_m": 39.44412802617441,
+        "far_distance_m": 41.45982845564031,
+        "max_speed_mps": 9.451348279088739
+      },
+      "updated_at": "2026-05-29T21:53:31.720914",
+      "files": {
+        "analysis": "videos/pro_match17_2_15_11/analysis.json",
+        "ball": "videos/pro_match17_2_15_11/ball.csv",
+        "players": "videos/pro_match17_2_15_11/players.csv",
+        "motion": "videos/pro_match17_2_15_11/motion.csv",
+        "quality": "videos/pro_match17_2_15_11/quality.json",
+        "original_video": "videos/pro_match17_2_15_11/original.mp4",
+        "overlay_video": "videos/pro_match17_2_15_11/overlay.mp4",
+        "final_video": "videos/pro_match17_2_15_11/final.mp4"
+      },
+      "quality": {
+        "ball_detection_rate": 0.8021276595744681,
+        "ball_quality_level": "Green",
+        "ball_quality_score": 95.24,
+        "ball_low_confidence": false,
+        "near_player_coverage": 1.0,
+        "far_player_coverage": 0.9702127659574468,
+        "warning_count": 2
+      }
+    },
+    {
+      "id": "pro_match17_2_18_11",
+      "title": "pro_match17_2_18_11",
+      "fps": 29.97,
+      "frame_count": 501,
+      "duration_s": 16.716716716716718,
+      "analysis_meta": {
+        "video_id": "pro_match17_2_18_11",
+        "frames": 501,
+        "fps": 29.97,
+        "duration_s": 16.716716716716718,
+        "resolution": "1280x720",
+        "ball_visible_rate": 0.7045908183632734,
+        "ball_spatial_rate": 0.17365269461077845,
+        "ball_filter_applied": true,
+        "ball_quality_level": "Green",
+        "ball_quality_score": 94.02,
+        "ball_low_confidence": false,
+        "near_visible_rate": 1.0,
+        "far_visible_rate": 0.9880239520958084,
+        "detection_gaps": 7,
+        "near_distance_m": 40.22498623964096,
+        "far_distance_m": 49.40035538545658,
+        "max_speed_mps": 9.430303354638035
+      },
+      "updated_at": "2026-05-29T21:53:54.237604",
+      "files": {
+        "analysis": "videos/pro_match17_2_18_11/analysis.json",
+        "ball": "videos/pro_match17_2_18_11/ball.csv",
+        "players": "videos/pro_match17_2_18_11/players.csv",
+        "motion": "videos/pro_match17_2_18_11/motion.csv",
+        "quality": "videos/pro_match17_2_18_11/quality.json",
+        "original_video": "videos/pro_match17_2_18_11/original.mp4",
+        "overlay_video": "videos/pro_match17_2_18_11/overlay.mp4",
+        "final_video": "videos/pro_match17_2_18_11/final.mp4"
+      },
+      "quality": {
+        "ball_detection_rate": 0.7045908183632734,
+        "ball_quality_level": "Green",
+        "ball_quality_score": 94.02,
+        "ball_low_confidence": false,
+        "near_player_coverage": 1.0,
+        "far_player_coverage": 0.9880239520958084,
+        "warning_count": 2
+      }
+    },
+    {
+      "id": "pro_match19_1_01_01",
+      "title": "pro_match19_1_01_01",
+      "fps": 29.97,
+      "frame_count": 460,
+      "duration_s": 15.348682015348682,
+      "analysis_meta": {
+        "video_id": "pro_match19_1_01_01",
+        "frames": 460,
+        "fps": 29.97,
+        "duration_s": 15.348682015348682,
+        "resolution": "1280x720",
+        "ball_visible_rate": 0.691304347826087,
+        "ball_spatial_rate": 0.12173913043478261,
+        "ball_filter_applied": true,
+        "ball_quality_level": "Green",
+        "ball_quality_score": 95.96,
+        "ball_low_confidence": false,
+        "near_visible_rate": 1.0,
+        "far_visible_rate": 0.9608695652173913,
+        "detection_gaps": 5,
+        "near_distance_m": 43.74546419112362,
+        "far_distance_m": 37.37380458040335,
+        "max_speed_mps": 9.325289171668329
+      },
+      "updated_at": "2026-05-29T21:54:15.226104",
+      "files": {
+        "analysis": "videos/pro_match19_1_01_01/analysis.json",
+        "ball": "videos/pro_match19_1_01_01/ball.csv",
+        "players": "videos/pro_match19_1_01_01/players.csv",
+        "motion": "videos/pro_match19_1_01_01/motion.csv",
+        "quality": "videos/pro_match19_1_01_01/quality.json",
+        "original_video": "videos/pro_match19_1_01_01/original.mp4",
+        "overlay_video": "videos/pro_match19_1_01_01/overlay.mp4",
+        "final_video": "videos/pro_match19_1_01_01/final.mp4"
+      },
+      "quality": {
+        "ball_detection_rate": 0.691304347826087,
+        "ball_quality_level": "Green",
+        "ball_quality_score": 95.96,
+        "ball_low_confidence": false,
+        "near_player_coverage": 1.0,
+        "far_player_coverage": 0.9608695652173913,
+        "warning_count": 2
       }
     }
   ]

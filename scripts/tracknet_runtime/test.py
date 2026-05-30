@@ -17,6 +17,25 @@ from utils.general import *
 from utils.metric import *
 
 
+def resolve_device(requested):
+    """Resolve an accelerator consistently on Windows, macOS, and CPU hosts."""
+    name = (requested or 'auto').lower()
+    cuda_ok = torch.cuda.is_available()
+    mps_backend = getattr(torch.backends, 'mps', None)
+    mps_ok = bool(mps_backend and mps_backend.is_available())
+    if name == 'auto':
+        if cuda_ok:
+            return torch.device('cuda')
+        if mps_ok:
+            return torch.device('mps')
+        return torch.device('cpu')
+    if name == 'cuda' and not cuda_ok:
+        raise RuntimeError('CUDA was requested, but torch.cuda.is_available() is False.')
+    if name == 'mps' and not mps_ok:
+        raise RuntimeError('MPS was requested, but torch.backends.mps.is_available() is False.')
+    return torch.device(name)
+
+
 pred_types = ['TP', 'TN', 'FP1', 'FP2', 'FN']
 pred_types_map = {pred_type: i for i, pred_type in enumerate(pred_types)}
 inpaintnet_eval_types = ['inpaint', 'reconstruct', 'baseline']
@@ -328,7 +347,7 @@ def eval_tracknet(model, data_loader, param_dict):
     """
 
     model.eval()
-    device = param_dict.get('device', torch.device('cuda' if torch.cuda.is_available() else 'cpu'))
+    device = param_dict.get('device') or resolve_device('auto')
     losses = []
     confusion_matrix = np.zeros(5) # TP, TN, FP1, FP2, FN
     if param_dict['verbose']:
@@ -387,7 +406,7 @@ def eval_inpaintnet(model, data_loader, param_dict):
     """
 
     model.eval()
-    device = param_dict.get('device', torch.device('cuda' if torch.cuda.is_available() else 'cpu'))
+    device = param_dict.get('device') or resolve_device('auto')
     losses = []
     confusion_matrix = {eval_type: np.zeros(5) for eval_type in inpaintnet_eval_types} # TP, TN, FP1, FP2, FN
     if param_dict['verbose']:
@@ -619,11 +638,12 @@ def test_rally(model, rally_dir, param_dict, save_inpaint_mask=False):
             data_loader = DataLoader(dataset, batch_size=param_dict['batch_size'], shuffle=False, num_workers=param_dict['num_workers'], drop_last=False)
             
             data_prob = tqdm(data_loader) if param_dict['verbose'] else data_loader
+            device = param_dict.get('device', torch.device('cpu'))
             for step, (i, x, y, _, _) in enumerate(data_prob):
-                x = x.float().cuda()
+                x = x.float().to(device)
                 with torch.no_grad():
                     y_pred = tracknet(x).detach().cpu()
-                
+
                 # Predict
                 tmp_pred = evaluate(i, y_true=y, y_pred=y_pred,
                                     tolerance=param_dict['tolerance'],
@@ -646,8 +666,9 @@ def test_rally(model, rally_dir, param_dict, save_inpaint_mask=False):
             y_pred_buffer = torch.zeros((buffer_size, seq_len, HEIGHT, WIDTH), dtype=torch.float32)
 
             data_prob = tqdm(data_loader) if param_dict['verbose'] else data_loader
+            device = param_dict.get('device', torch.device('cpu'))
             for step, (i, x, y, _, _) in enumerate(data_prob):
-                x = x.float().cuda()
+                x = x.float().to(device)
                 b_size, seq_len = i.shape[0], i.shape[1]
                 with torch.no_grad():
                     y_pred = tracknet(x).detach().cpu()
@@ -709,10 +730,11 @@ def test_rally(model, rally_dir, param_dict, save_inpaint_mask=False):
             data_loader = DataLoader(dataset, batch_size=param_dict['batch_size'], shuffle=False, num_workers=param_dict['num_workers'], drop_last=False)
 
             data_prob = tqdm(data_loader) if param_dict['verbose'] else data_loader
+            device = param_dict.get('device', torch.device('cpu'))
             for step, (i, coor_pred, coor, _, _, inpaint_mask) in enumerate(data_prob):
                 coor_pred, coor, inpaint_mask = coor_pred.float(), coor.float(), inpaint_mask.float()
                 with torch.no_grad():
-                    coor_inpaint = inpaintnet(coor_pred.cuda(), inpaint_mask.cuda()).detach().cpu()
+                    coor_inpaint = inpaintnet(coor_pred.to(device), inpaint_mask.to(device)).detach().cpu()
                     coor_inpaint = coor_inpaint * inpaint_mask + coor_pred * (1-inpaint_mask) # replace predicted coordinates with inpainted coordinates
                 
                 # Thresholding
@@ -737,11 +759,12 @@ def test_rally(model, rally_dir, param_dict, save_inpaint_mask=False):
             coor_inpaint_buffer = torch.zeros((buffer_size, seq_len, 2), dtype=torch.float32)
 
             data_prob = tqdm(data_loader) if param_dict['verbose'] else data_loader
+            device = param_dict.get('device', torch.device('cpu'))
             for step, (i, coor_pred, coor, _, _, inpaint_mask) in enumerate(data_prob):
                 coor_pred, coor, inpaint_mask = coor_pred.float(), coor.float(), inpaint_mask.float()
                 b_size = i.shape[0]
                 with torch.no_grad():
-                    coor_inpaint = inpaintnet(coor_pred.cuda(), inpaint_mask.cuda()).detach().cpu()
+                    coor_inpaint = inpaintnet(coor_pred.to(device), inpaint_mask.to(device)).detach().cpu()
                     coor_inpaint = coor_inpaint * inpaint_mask + coor_pred * (1 - inpaint_mask) # replace predicted coordinates with inpainted coordinates
                 
                 # Thresholding
@@ -811,11 +834,12 @@ def test_rally_linear(model, rally_dir, param_dict):
         data_loader = DataLoader(dataset, batch_size=param_dict['batch_size'], shuffle=False, num_workers=param_dict['num_workers'], drop_last=False)
         
         data_prob = tqdm(data_loader) if param_dict['verbose'] else data_loader
+        device = param_dict.get('device', torch.device('cpu'))
         for step, (i, x, y, _, _) in enumerate(data_prob):
-            x = x.float().cuda()
+            x = x.float().to(device)
             with torch.no_grad():
                 y_pred = tracknet(x).detach().cpu()
-            
+
             # Predict
             tmp_pred = evaluate(i, y_true=y, y_pred=y_pred, tolerance=param_dict['tolerance'])
             for key in tmp_pred.keys():
@@ -834,8 +858,9 @@ def test_rally_linear(model, rally_dir, param_dict):
         y_pred_buffer = torch.zeros((buffer_size, seq_len, HEIGHT, WIDTH), dtype=torch.float32)
 
         data_prob = tqdm(data_loader) if param_dict['verbose'] else data_loader
+        device = param_dict.get('device', torch.device('cpu'))
         for step, (i, x, y, _, _) in enumerate(data_prob):
-            x = x.float().cuda()
+            x = x.float().to(device)
             b_size, seq_len = i.shape[0], i.shape[1]
             with torch.no_grad():
                 y_pred = tracknet(x).detach().cpu()
@@ -924,12 +949,19 @@ if __name__ == '__main__':
     parser.add_argument('--verbose', action='store_true', default=False)
     parser.add_argument('--debug', action='store_true', default=False)
     parser.add_argument('--linear_interp', action='store_true', default=False)
+    parser.add_argument('--device', type=str, default='auto', choices=['auto', 'cpu', 'cuda', 'mps'],
+                        help='Device for inference: auto (default), cpu, cuda, or mps')
     args = parser.parse_args()
 
     param_dict = vars(args)
     param_dict['num_workers'] = args.batch_size if args.batch_size <= 16 else 16
     param_dict['output_bbox'] = args.output_bbox
     param_dict['output_gt'] = False
+
+    # Resolve device (supports auto, cuda, mps, cpu)
+    device = resolve_device(args.device)
+    param_dict['device'] = device
+    print(f'[INFO] device={device}')
     
     if not os.path.exists(args.save_dir):
         os.makedirs(args.save_dir)
@@ -937,19 +969,19 @@ if __name__ == '__main__':
     # Load parameter
     print(f'Loading checkpoint...')
     if args.tracknet_file:
-        tracknet_ckpt = torch.load(args.tracknet_file)
+        tracknet_ckpt = torch.load(args.tracknet_file, map_location=device, weights_only=False)
         param_dict['tracknet_seq_len'] = tracknet_ckpt['param_dict']['seq_len']
         param_dict['bg_mode'] = tracknet_ckpt['param_dict']['bg_mode']
-        tracknet = get_model('TrackNet', seq_len=param_dict['tracknet_seq_len'], bg_mode=param_dict['bg_mode']).cuda()
+        tracknet = get_model('TrackNet', seq_len=param_dict['tracknet_seq_len'], bg_mode=param_dict['bg_mode']).to(device)
         tracknet.load_state_dict(tracknet_ckpt['model'])
         model = (tracknet, None)
     else:
         tracknet = None
-    
+
     if args.inpaintnet_file:
-        inpaintnet_ckpt = torch.load(args.inpaintnet_file)
+        inpaintnet_ckpt = torch.load(args.inpaintnet_file, map_location=device, weights_only=False)
         param_dict['inpaintnet_seq_len'] = inpaintnet_ckpt['param_dict']['seq_len']
-        inpaintnet = get_model('InpaintNet').cuda()
+        inpaintnet = get_model('InpaintNet').to(device)
         inpaintnet.load_state_dict(inpaintnet_ckpt['model'])
         model = (tracknet, inpaintnet)
 

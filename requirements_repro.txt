@@ -11,4 +11,3 @@ dash
 parse
 ultralytics
 requests
-imageio-ffmpeg>=0.6.0

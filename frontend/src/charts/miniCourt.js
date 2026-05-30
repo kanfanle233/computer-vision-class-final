@@ -34,13 +34,37 @@ export function createMiniCourt(container, onSeek) {
       .attr("width", courtW)
       .attr("height", courtH);
       
+    const singlesMargin = width * (0.46 / 6.1);
+    const shortServiceFromNet = length * (1.98 / 13.4);
+    const doublesServiceFromBaseline = length * (0.76 / 13.4);
+    const netY = length / 2;
+    const centerLineTopEndY = netY - shortServiceFromNet;
+    const centerLineBottomStartY = netY + shortServiceFromNet;
+
     const lines = [
+      // Outer Boundary (Doubles sideline and baseline)
       [[0, 0], [width, 0], [width, length], [0, length], [0, 0]],
-      [[0, length / 2], [width, length / 2]],
-      [[width / 2, 0], [width / 2, length]],
-      [[0, 1.98], [width, 1.98]],
-      [[0, length - 1.98], [width, length - 1.98]],
+      
+      // Singles sidelines (Left and Right)
+      [[singlesMargin, 0], [singlesMargin, length]],
+      [[width - singlesMargin, 0], [width - singlesMargin, length]],
+      
+      // Net Line
+      [[0, netY], [width, netY]],
+      
+      // Short Service Lines (Top and Bottom)
+      [[0, centerLineTopEndY], [width, centerLineTopEndY]],
+      [[0, centerLineBottomStartY], [width, centerLineBottomStartY]],
+      
+      // Doubles Long Service Lines (Top and Bottom)
+      [[0, doublesServiceFromBaseline], [width, doublesServiceFromBaseline]],
+      [[0, length - doublesServiceFromBaseline], [width, length - doublesServiceFromBaseline]],
+      
+      // Center Service Lines (Top and Bottom service courts only)
+      [[width / 2, 0], [width / 2, centerLineTopEndY]],
+      [[width / 2, centerLineBottomStartY], [width / 2, length]]
     ];
+
     for (const l of lines) {
       court
         .append("path")

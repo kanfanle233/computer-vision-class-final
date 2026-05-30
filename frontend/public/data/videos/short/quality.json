@@ -1,157 +1,99 @@
 {
   "video_id": "short",
   "frame_count": 630,
-  "ball_visible_frames": 401,
-  "ball_detection_rate": 0.6365079365079365,
+  "ball_visible_frames": 355,
+  "ball_detection_rate": 0.5634920634920635,
+  "ball_spatial_frames": 0,
+  "ball_spatial_rate": 0.0,
+  "ball_interpolated_frames": 83,
+  "ball_low_confidence_frames": 143,
+  "ball_filtered_frames": 0,
+  "ball_filter_applied": true,
   "ball_missing_segments": [
     {
-      "start_frame": 2,
-      "end_frame": 3,
-      "length": 2
-    },
-    {
-      "start_frame": 6,
-      "end_frame": 9,
-      "length": 4
-    },
-    {
-      "start_frame": 12,
-      "end_frame": 17,
-      "length": 6
-    },
-    {
-      "start_frame": 19,
-      "end_frame": 21,
-      "length": 3
-    },
-    {
-      "start_frame": 35,
-      "end_frame": 40,
-      "length": 6
-    },
-    {
-      "start_frame": 54,
-      "end_frame": 60,
-      "length": 7
-    },
-    {
-      "start_frame": 73,
-      "end_frame": 78,
-      "length": 6
-    },
-    {
-      "start_frame": 102,
-      "end_frame": 133,
-      "length": 32
-    },
-    {
-      "start_frame": 137,
-      "end_frame": 138,
-      "length": 2
-    },
-    {
-      "start_frame": 140,
-      "end_frame": 141,
-      "length": 2
-    },
-    {
-      "start_frame": 151,
-      "end_frame": 176,
-      "length": 26
-    },
-    {
-      "start_frame": 228,
-      "end_frame": 229,
-      "length": 2
-    },
-    {
-      "start_frame": 233,
-      "end_frame": 239,
-      "length": 7
-    },
-    {
-      "start_frame": 251,
-      "end_frame": 251,
+      "start_frame": 0,
+      "end_frame": 0,
       "length": 1
     },
     {
-      "start_frame": 254,
-      "end_frame": 261,
-      "length": 8
+      "start_frame": 103,
+      "end_frame": 122,
+      "length": 20
     },
     {
-      "start_frame": 274,
-      "end_frame": 280,
-      "length": 7
+      "start_frame": 155,
+      "end_frame": 182,
+      "length": 28
     },
     {
-      "start_frame": 293,
-      "end_frame": 308,
-      "length": 16
+      "start_frame": 192,
+      "end_frame": 219,
+      "length": 28
     },
     {
-      "start_frame": 310,
-      "end_frame": 320,
+      "start_frame": 294,
+      "end_frame": 304,
       "length": 11
     },
     {
-      "start_frame": 455,
-      "end_frame": 458,
-      "length": 4
+      "start_frame": 334,
+      "end_frame": 386,
+      "length": 53
     },
     {
-      "start_frame": 467,
-      "end_frame": 476,
+      "start_frame": 415,
+      "end_frame": 424,
       "length": 10
     },
     {
-      "start_frame": 505,
-      "end_frame": 515,
-      "length": 11
+      "start_frame": 435,
+      "end_frame": 451,
+      "length": 17
     },
     {
-      "start_frame": 528,
-      "end_frame": 530,
-      "length": 3
+      "start_frame": 465,
+      "end_frame": 476,
+      "length": 12
+    },
+    {
+      "start_frame": 506,
+      "end_frame": 515,
+      "length": 10
     },
     {
       "start_frame": 532,
-      "end_frame": 532,
-      "length": 1
-    },
-    {
-      "start_frame": 544,
-      "end_frame": 553,
+      "end_frame": 541,
       "length": 10
     },
     {
-      "start_frame": 562,
-      "end_frame": 598,
-      "length": 37
+      "start_frame": 544,
+      "end_frame": 552,
+      "length": 9
     },
     {
-      "start_frame": 615,
-      "end_frame": 616,
-      "length": 2
-    },
-    {
-      "start_frame": 619,
-      "end_frame": 621,
-      "length": 3
+      "start_frame": 563,
+      "end_frame": 628,
+      "length": 66
     }
   ],
+  "ball_quality_level": "Green",
+  "ball_quality_score": 88.96,
+  "ball_low_confidence": false,
   "player_coverage": {
-    "near": 0.9650793650793651,
-    "far": 0.8761904761904762
+    "near": 0.49047619047619045,
+    "far": 0.773015873015873
   },
   "source_files": {
-    "ball": "output\\short\\short_ball.csv",
-    "players": "output\\short\\short_players.csv",
-    "motion": "output\\short\\short_motion.csv",
-    "stats": "output\\short\\short_stats.json",
-    "original": "inputs\\short.mp4",
-    "overlay": "output\\short\\short_overlay.mp4",
-    "final": "output\\short\\short_final.mp4"
+    "ball": "output/short/short_ball.csv",
+    "players": "output/short/short_players.csv",
+    "motion": "output/short/short_motion.csv",
+    "stats": "output/short/short_stats.json",
+    "original": "inputs/short.mp4",
+    "overlay": "output/short/short_overlay.mp4",
+    "final": "output/short/short_final.mp4"
   },
-  "warnings": []
+  "warnings": [
+    "Most shuttle detections cannot be reliably floor-projected; omitted from court map.",
+    "143 shuttle detections are filtered or interpolated low-confidence points."
+  ]
 }

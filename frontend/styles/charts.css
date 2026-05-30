@@ -106,3 +106,37 @@
   font-size: 13px;
   padding: 16px;
 }
+
+.zone-row-bg {
+  fill: rgba(247, 250, 252, 0.72);
+}
+
+.zone-axis text {
+  fill: var(--muted);
+  font-size: 10px;
+}
+
+.zone-bar {
+  transition: opacity 120ms ease, stroke-width 120ms ease;
+}
+
+.zone-bar:hover,
+.zone-bar.active-frame {
+  opacity: 1;
+}
+
+.zone-bar.active-frame {
+  stroke: #263548;
+  stroke-width: 1.8px;
+}
+
+.zone-value {
+  fill: var(--muted);
+  font-family: var(--mono);
+  font-size: 9.5px;
+  pointer-events: none;
+}
+
+.zone-caption {
+  font-size: 10px;
+}

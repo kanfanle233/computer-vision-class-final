@@ -11,8 +11,7 @@ from pathlib import Path
 import numpy as np
 import cv2
 
-from transcode_browser_video import transcode_to_h264, video_codec
-from evaluate_ball_tracking import evaluate_files
+from transcode_browser_video import transcode_to_h264
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -20,8 +19,7 @@ OUTPUT_ROOT = ROOT / "output"
 DEFAULT_DATA_ROOT = ROOT / "frontend" / "public" / "data"
 COURT_WIDTH_M = 6.1
 COURT_LENGTH_M = 13.4
-TRAJECTORY_MODES = ("reference", "raw_prediction", "filtered_prediction")
-MIN_OPTIMIZED_F1_AT_10 = 0.154
+MAX_PROJECTED_BALL_SPEED_MPS = 35.0
 _reference_candidates = [
     Path(os.environ["BADMINTON_UPLOADED_VIDEO"]) if os.environ.get("BADMINTON_UPLOADED_VIDEO") else None,
     ROOT / "inputs" / "前端可视化.mp4",
@@ -243,7 +241,6 @@ def discover_sources():
             "motion": find_first([directory / f"{video_id}_motion.csv"]),
             "overlay": find_first([directory / f"{video_id}_overlay.mp4"]),
             "final": find_first([directory / f"{video_id}_final.mp4"]),
-            "trajectory_metadata": directory / "trajectories" / "metadata.json",
             "source_mtime": max((p.stat().st_mtime for p in directory.rglob("*") if p.is_file()), default=0),
         }
         if has_nonempty_final(source):
@@ -264,7 +261,6 @@ def discover_sources():
             "motion": find_first([OUTPUT_ROOT / "motion.csv"]),
             "overlay": find_first([OUTPUT_ROOT / "overlay.mp4"]),
             "final": find_first([OUTPUT_ROOT / "final.mp4", OUTPUT_ROOT / f"{video_id}" / f"{video_id}_final.mp4"]),
-            "trajectory_metadata": OUTPUT_ROOT / "trajectories" / "metadata.json",
             "source_mtime": max(
                 (p.stat().st_mtime for p in [standard_stats, OUTPUT_ROOT / "ball.csv", OUTPUT_ROOT / "overlay.mp4"] if p.exists()),
                 default=0,
@@ -289,48 +285,123 @@ def source_paths_for_video(source):
     }
 
 
-def trajectory_paths_for_video(source):
-    root = source["root"]
-    video_id = source["video_id"]
-    trajectory_root = root / "trajectories"
-    return {
-        "reference": find_first([trajectory_root / "reference.csv", ROOT / "inputs" / f"{video_id}_ball.csv"]),
-        "raw_prediction": find_first(
-            [trajectory_root / "raw_prediction.csv", root / "tracknet_v3_result_regen" / f"{video_id}_ball.csv"]
-        ),
-        "filtered_prediction": find_first([trajectory_root / "filtered_prediction.csv"]),
-    }
-
-
 def has_nonempty_final(source):
     final_path = source.get("final")
     return bool(final_path and final_path.exists() and final_path.stat().st_size > 0)
 
 
-def normalize_ball(rows, frame_count, fps, homography, ball_shift, source_type="raw_prediction"):
+def load_ball_quality(video_id: str, root: Path) -> dict:
+    """Load ball tracking quality from refine report or quality summary.
+
+    Returns dict with at minimum: quality_level, quality_score, visible_rate.
+    Defaults to 'Green' if no refine report exists (legacy pipeline).
+    """
+    # Try individual refine report first
+    report_path = root / f"{video_id}_ball_refine_report.json"
+    if report_path.exists():
+        try:
+            report = json.loads(report_path.read_text(encoding="utf-8"))
+            c = report.get("counts", {})
+            frames = max(c.get("frames", 1), 1)
+            final_visible = c.get("final_visible", 0)
+            max_missing_gap = c.get("max_missing_gap", 0)
+            vis_rate = final_visible / frames
+
+            # Compute quality_score (same formula as audit_ball_quality.py)
+            raw_visible = max(c.get("raw_visible", 1), 1)
+            interpolated = c.get("interpolated", 0)
+            rejected_roi = c.get("rejected_roi", 0)
+            rejected_static_lock = c.get("rejected_static_lock", 0)
+            rejected_jump = c.get("rejected_jump", 0)
+            interp_rate = interpolated / max(final_visible, 1)
+
+            score_visible = min(1.0, vis_rate / 0.55)
+            score_gap = 1.0 if max_missing_gap <= 75 else max(0.0, 1.0 - (max_missing_gap - 75) / 120.0)
+            score_interp = max(0.0, 1.0 - interp_rate / 0.45)
+            score_roi = max(0.0, 1.0 - rejected_roi / raw_visible)
+            score_static = max(0.0, 1.0 - rejected_static_lock / raw_visible)
+            score_jump = max(0.0, 1.0 - rejected_jump / raw_visible)
+            quality_score = (
+                35.0 * score_visible + 20.0 * score_gap + 10.0 * score_interp
+                + 15.0 * score_roi + 10.0 * score_static + 10.0 * score_jump
+            )
+
+            # Grade
+            if quality_score >= 75.0 and vis_rate >= 0.55 and max_missing_gap <= 75:
+                level = "Green"
+            elif quality_score >= 55.0 and vis_rate >= 0.40 and max_missing_gap <= 120:
+                level = "Yellow"
+            else:
+                level = "Red"
+
+            return {
+                "quality_level": level,
+                "quality_score": round(quality_score, 2),
+                "visible_rate": round(vis_rate, 4),
+                "max_missing_gap": max_missing_gap,
+            }
+        except Exception:
+            pass
+
+    # No refine report — assume Green (legacy pipeline without refine)
+    return {
+        "quality_level": "Green",
+        "quality_score": 100.0,
+        "visible_rate": 0.0,
+        "max_missing_gap": 0,
+    }
+
+
+def normalize_ball(rows, frame_count, fps, homography, ball_shift):
     by_frame = {as_int(r.get("Frame", r.get("frame", 0))): r for r in rows}
+    conservative_filter = bool(rows and ("Source" in rows[0] or "source" in rows[0]))
     out = []
     prev = None
     missing_flags = []
     visible_count = 0
+    spatial_count = 0
+    interpolated_count = 0
+    low_confidence_count = 0
+    filtered_count = 0
     for frame in range(frame_count):
         raw = by_frame.get(frame, {})
         visibility = as_int(raw.get("Visibility", raw.get("visibility", 0)))
         x_px = as_float(raw.get("X", raw.get("x_px", "")), default=math.nan)
         y_px = as_float(raw.get("Y", raw.get("y_px", "")), default=math.nan)
         missing = visibility <= 0 or math.isnan(x_px) or math.isnan(y_px) or (x_px == 0 and y_px == 0)
-        source = raw.get("Source", raw.get("source", "missing" if missing else source_type))
-        court = None if missing else to_court((x_px, y_px), homography)
-        if court is not None:
-            court = (float(np.clip(court[0] + ball_shift, 0.0, COURT_WIDTH_M)), float(np.clip(court[1], 0.0, COURT_LENGTH_M)))
-        speed = 0.0
+        source = raw.get("Source", raw.get("source", "model" if not missing else "missing"))
+        confidence = as_float(raw.get("Confidence", raw.get("confidence", "")), default=0.9 if not missing else 0.0)
+        is_interpolated = int("interp" in str(source).lower() or as_int(raw.get("is_interpolated", 0)) > 0)
+        projected = None if missing else to_court((x_px, y_px), homography)
+        court = None
+        if projected is not None:
+            shifted = (projected[0] + ball_shift, projected[1])
+            if conservative_filter and 0.0 <= shifted[0] <= COURT_WIDTH_M and 0.0 <= shifted[1] <= COURT_LENGTH_M:
+                court = (float(shifted[0]), float(shifted[1]))
+            elif not conservative_filter:
+                # Preserve legacy exports until their source detections have
+                # been reviewed and processed by smooth_ball_csv.py.
+                court = (
+                    float(np.clip(shifted[0], 0.0, COURT_WIDTH_M)),
+                    float(np.clip(shifted[1], 0.0, COURT_LENGTH_M)),
+                )
+        speed = None
+        speed_valid = 0
         time_s = frame / max(fps, 1e-6)
-        if court is not None and prev is not None:
+        if court is not None and prev is not None and frame - prev["frame"] <= 2:
             dt = max(time_s - prev["time_s"], 1e-6)
-            speed = math.dist(court, prev["court"]) / dt
+            candidate_speed = math.dist(court, prev["court"]) / dt
+            if candidate_speed <= MAX_PROJECTED_BALL_SPEED_MPS:
+                speed = candidate_speed
+                speed_valid = 1
         if court is not None:
-            prev = {"time_s": time_s, "court": court}
+            prev = {"frame": frame, "time_s": time_s, "court": court}
+            spatial_count += 1
+        if not missing:
             visible_count += 1
+            interpolated_count += is_interpolated
+            low_confidence_count += int(confidence < 0.5)
+            filtered_count += int("filtered" in str(source).lower())
         missing_flags.append(missing)
         out.append({
             "frame": frame,
@@ -342,11 +413,17 @@ def normalize_ball(rows, frame_count, fps, homography, ball_shift, source_type="
             "court_y_m": "" if court is None else fmt(court[1]),
             "speed_mps": fmt(speed),
             "is_missing": int(missing),
-            "is_interpolated": int(source == "interp"),
+            "is_interpolated": is_interpolated,
+            "is_spatial_valid": int(court is not None),
+            "speed_valid": speed_valid,
+            "confidence": fmt(confidence, 3),
             "source": source,
-            "confidence": raw.get("Confidence", raw.get("confidence", "")),
         })
-    return out, visible_count, missing_segments(missing_flags)
+    return (
+        out, visible_count, spatial_count, interpolated_count,
+        low_confidence_count, filtered_count, conservative_filter,
+        missing_segments(missing_flags),
+    )
 
 
 def normalize_players(rows, frame_count, fps, homography):
@@ -458,7 +535,6 @@ def player_coverage(players, frame_count):
 def export_one(source, data_root):
     paths = source_paths_for_video(source)
     stats = read_json(paths["stats"])
-    trajectory_metadata = read_json(source["trajectory_metadata"]) if source.get("trajectory_metadata") and source["trajectory_metadata"].exists() else {}
     video_id = source["video_id"]
     fps = float(stats.get("fps") or 30.0)
     frame_count = int(stats.get("frame_count") or stats.get("frames_processed") or stats.get("source_frames") or 0)
@@ -475,73 +551,27 @@ def export_one(source, data_root):
     video_dir = data_root / "videos" / video_id
     video_dir.mkdir(parents=True, exist_ok=True)
 
-    trajectory_paths = trajectory_paths_for_video(source)
-    mode_rows = {}
-    mode_quality = {}
-    export_warnings = []
-    reference_path = trajectory_paths["reference"]
-    for mode in TRAJECTORY_MODES:
-        path = trajectory_paths.get(mode)
-        if not path:
-            continue
-        evaluation = None
-        if mode != "reference" and reference_path:
-            evaluation = evaluate_files(reference_path, path, source_type=mode, video_id=video_id)
-            if not evaluation["integrity"]["valid"]:
-                export_warnings.append(f"{mode} ignored: duplicate, missing, or extra frames in source CSV")
-                continue
-        normalized, visible, missing = normalize_ball(
-            read_csv_rows(path), frame_count, fps, homography, ball_shift, source_type=mode
-        )
-        mode_rows[mode] = normalized
-        mode_quality[mode] = {
-            "source_type": mode,
-            "label": {
-                "reference": "官方参考",
-                "raw_prediction": "原始预测",
-                "filtered_prediction": "优化预测",
-            }[mode],
-            "source_file": str(path.relative_to(ROOT)) if path.is_relative_to(ROOT) else str(path),
-            "ball_visible_frames": visible,
-            "ball_detection_rate": visible / max(frame_count, 1),
-            "ball_missing_segments": missing,
-            "evaluation": evaluation,
-        }
-        write_csv_rows(video_dir / f"ball_{mode}.csv", list(normalized[0].keys()) if normalized else [], normalized)
+    # Quality gate: check ball tracking quality before export
+    ball_quality = load_ball_quality(video_id, source["root"])
+    quality_level = ball_quality["quality_level"]
 
-    raw_f1 = (
-        mode_quality.get("raw_prediction", {}).get("evaluation", {}).get("metrics", {}).get("f1_at_10px", {}).get("f1")
-    )
-    filtered_f1 = (
-        mode_quality.get("filtered_prediction", {}).get("evaluation", {}).get("metrics", {}).get("f1_at_10px", {}).get("f1")
-    )
-    if filtered_f1 is not None:
-        improved = raw_f1 is not None and filtered_f1 > raw_f1 and filtered_f1 > MIN_OPTIMIZED_F1_AT_10
-        mode_quality["filtered_prediction"]["optimization_status"] = "improved" if improved else "experiment_only"
-        if not improved:
-            mode_quality["filtered_prediction"]["label"] = "过滤实验（未达标）"
-
-    default_trajectory_mode = next(
-        (mode for mode in ("reference", "filtered_prediction", "raw_prediction") if mode in mode_rows),
-        None,
-    )
-    if default_trajectory_mode is None:
-        fallback, visible, missing = normalize_ball(
-            ball_rows_raw, frame_count, fps, homography, ball_shift, source_type="unclassified"
+    if quality_level == "Red":
+        # Red: do not export ball trajectory/speed — export empty data with quality explanation
+        ball_rows = []
+        visible_ball = 0
+        spatial_ball = 0
+        interpolated_ball = 0
+        low_confidence_ball = 0
+        filtered_ball = 0
+        conservative_ball = True
+        ball_missing = [{"start_frame": 0, "end_frame": max(frame_count - 1, 0), "length": frame_count}]
+    else:
+        (
+            ball_rows, visible_ball, spatial_ball, interpolated_ball,
+            low_confidence_ball, filtered_ball, conservative_ball, ball_missing,
+        ) = normalize_ball(
+            ball_rows_raw, frame_count, fps, homography, ball_shift
         )
-        mode_rows["unclassified"] = fallback
-        mode_quality["unclassified"] = {
-            "source_type": "unclassified",
-            "label": "未分类轨迹",
-            "ball_visible_frames": visible,
-            "ball_detection_rate": visible / max(frame_count, 1),
-            "ball_missing_segments": missing,
-            "evaluation": None,
-        }
-        default_trajectory_mode = "unclassified"
-    ball_rows = mode_rows[default_trajectory_mode]
-    visible_ball = mode_quality[default_trajectory_mode]["ball_visible_frames"]
-    ball_missing = mode_quality[default_trajectory_mode]["ball_missing_segments"]
     players_rows = normalize_players(read_csv_rows(paths["players"]), frame_count, fps, homography)
     motion_rows = normalize_motion(read_csv_rows(paths["motion"]), frame_count, fps)
     coverage = player_coverage(players_rows, frame_count)
@@ -550,35 +580,18 @@ def export_one(source, data_root):
     write_csv_rows(video_dir / "players.csv", list(players_rows[0].keys()) if players_rows else [], players_rows)
     write_csv_rows(video_dir / "motion.csv", list(motion_rows[0].keys()) if motion_rows else [], motion_rows)
 
-    warnings = list(export_warnings)
+    warnings = []
     copied = {}
     for label in ("original", "overlay", "final"):
         path = paths[label]
         if path and path.exists():
-            cached_video = next(
-                (
-                    candidate
-                    for candidate in (video_dir / f"{label}.webm", video_dir / f"{label}.mp4")
-                    if candidate.exists()
-                    and candidate.stat().st_mtime >= path.stat().st_mtime
-                    and (candidate.suffix.lower() == ".webm" or video_codec(candidate).lower() in {"h264", "avc1"})
-                ),
-                None,
-            )
-            if cached_video is not None:
-                copied[label] = cached_video.name
-                continue
             target = video_dir / f"{label}{path.suffix.lower()}"
-            requested_target = target
             if label in {"original", "overlay", "final"}:
                 try:
-                    transcode_result = transcode_to_h264(path, target, overwrite=True)
-                    target = Path(transcode_result["output"])
-                    if target != requested_target and requested_target.exists():
-                        requested_target.unlink()
+                    transcode_to_h264(path, target, overwrite=True)
                 except Exception as exc:
                     shutil.copy2(path, target)
-                    warnings.append(f"{label} browser transcode failed; copied source video: {exc}")
+                    warnings.append(f"{label} H.264 transcode failed; copied source video: {exc}")
             else:
                 shutil.copy2(path, target)
             copied[label] = target.name
@@ -593,6 +606,26 @@ def export_one(source, data_root):
         warnings.append("final video missing; overlay remains available")
     if "original" not in copied:
         warnings.append("original input video missing; original mode disabled")
+    if conservative_ball and visible_ball and spatial_ball / visible_ball < 0.5:
+        warnings.append("Most shuttle detections cannot be reliably floor-projected; omitted from court map.")
+    if low_confidence_ball:
+        warnings.append(f"{low_confidence_ball} shuttle detections are filtered or interpolated low-confidence points.")
+    if filtered_ball:
+        warnings.append("Shuttle trajectory uses conservative heuristic filtering and is not manually verified ground truth.")
+
+    # Quality gate warnings
+    if quality_level == "Red":
+        warnings.append(
+            f"Ball tracking quality is Red (score={ball_quality['quality_score']:.0f}). "
+            "Shuttle trajectory and ball speed data are NOT exported. "
+            "Only player analytics data is available."
+        )
+    elif quality_level == "Yellow":
+        warnings.append(
+            f"Ball tracking quality is Yellow (score={ball_quality['quality_score']:.0f}, "
+            f"visible_rate={ball_quality['visible_rate']:.0%}). "
+            "Shuttle trajectory is exported but marked as low confidence."
+        )
 
     original_meta = video_metadata(paths["original"]) if paths["original"] and paths["original"].exists() else None
     overlay_meta = video_metadata(paths["overlay"]) if paths["overlay"] and paths["overlay"].exists() else None
@@ -611,6 +644,11 @@ def export_one(source, data_root):
         "duration_s": frame_count / max(fps, 1e-6),
         "resolution": analysis_resolution,
         "ball_visible_rate": visible_ball / max(frame_count, 1),
+        "ball_spatial_rate": spatial_ball / max(frame_count, 1),
+        "ball_filter_applied": conservative_ball,
+        "ball_quality_level": quality_level,
+        "ball_quality_score": ball_quality["quality_score"],
+        "ball_low_confidence": quality_level != "Green",
         "near_visible_rate": coverage["near"],
         "far_visible_rate": coverage["far"],
         "detection_gaps": len(ball_missing),
@@ -632,9 +670,6 @@ def export_one(source, data_root):
         "analysis_meta": analysis_meta,
         "original_video_meta": original_meta,
         "uploaded_video_meta": uploaded_video_meta(),
-        "default_trajectory_mode": default_trajectory_mode,
-        "trajectory_modes": list(mode_rows),
-        "trajectory_metadata": trajectory_metadata,
         "files": {
             "ball": "ball.csv",
             "players": "players.csv",
@@ -643,7 +678,6 @@ def export_one(source, data_root):
             "original_video": copied.get("original"),
             "overlay_video": copied.get("overlay"),
             "final_video": copied.get("final"),
-            "ball_modes": {mode: f"ball_{mode}.csv" for mode in mode_rows if mode != "unclassified"},
         },
     }
     quality = {
@@ -651,10 +685,16 @@ def export_one(source, data_root):
         "frame_count": frame_count,
         "ball_visible_frames": visible_ball,
         "ball_detection_rate": visible_ball / max(frame_count, 1),
+        "ball_spatial_frames": spatial_ball,
+        "ball_spatial_rate": spatial_ball / max(frame_count, 1),
+        "ball_interpolated_frames": interpolated_ball,
+        "ball_low_confidence_frames": low_confidence_ball,
+        "ball_filtered_frames": filtered_ball,
+        "ball_filter_applied": conservative_ball,
         "ball_missing_segments": ball_missing,
-        "default_trajectory_mode": default_trajectory_mode,
-        "trajectory_modes": mode_quality,
-        "trajectory_metadata": trajectory_metadata,
+        "ball_quality_level": quality_level,
+        "ball_quality_score": ball_quality["quality_score"],
+        "ball_low_confidence": quality_level != "Green",
         "player_coverage": coverage,
         "source_files": {name: str(path.relative_to(ROOT)) if path and path.exists() else None for name, path in paths.items()},
         "warnings": warnings,
@@ -679,23 +719,12 @@ def export_one(source, data_root):
             "original_video": f"videos/{video_id}/{copied['original']}" if "original" in copied else None,
             "overlay_video": f"videos/{video_id}/{copied['overlay']}" if "overlay" in copied else None,
             "final_video": f"videos/{video_id}/{copied['final']}" if "final" in copied else None,
-            "ball_modes": {
-                mode: f"videos/{video_id}/ball_{mode}.csv"
-                for mode in mode_rows
-                if mode != "unclassified"
-            },
         },
         "quality": {
             "ball_detection_rate": quality["ball_detection_rate"],
-            "default_trajectory_mode": default_trajectory_mode,
-            "trajectory_modes": {
-                mode: {
-                    "label": payload["label"],
-                    "evaluation": payload["evaluation"],
-                    "ball_detection_rate": payload["ball_detection_rate"],
-                }
-                for mode, payload in mode_quality.items()
-            },
+            "ball_quality_level": quality_level,
+            "ball_quality_score": ball_quality["quality_score"],
+            "ball_low_confidence": quality_level != "Green",
             "near_player_coverage": coverage["near"],
             "far_player_coverage": coverage["far"],
             "warning_count": len(warnings),
@@ -720,7 +749,15 @@ def main():
     videos = []
     for source in sorted(sources.values(), key=lambda item: item.get("source_mtime", 0)):
         videos.append(export_one(source, data_root))
-    default_video = max(videos, key=lambda item: item["updated_at"])["id"]
+    quality_rank = {"Green": 0, "Yellow": 1, "Red": 2}
+    videos.sort(
+        key=lambda item: (
+            quality_rank.get(item.get("quality", {}).get("ball_quality_level", "Red"), 3),
+            item["id"] != "short",
+            item["id"],
+        )
+    )
+    default_video = videos[0]["id"]
     manifest = {
         "generated_at": datetime.now().isoformat(timespec="seconds"),
         "default_video": default_video,

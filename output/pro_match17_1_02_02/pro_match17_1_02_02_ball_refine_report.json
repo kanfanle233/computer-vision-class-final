@@ -1,0 +1,131 @@
+{
+  "input_csv": "output/pro_match17_1_02_02/pro_match17_1_02_02_ball.csv",
+  "output_csv": "output/pro_match17_1_02_02/pro_match17_1_02_02_ball.csv",
+  "inpaintnet_enabled": false,
+  "inpaintnet_path": "",
+  "parameters": {
+    "court_points": [
+      [
+        426.0,
+        368.0
+      ],
+      [
+        883.0,
+        370.0
+      ],
+      [
+        991.0,
+        678.0
+      ],
+      [
+        221.0,
+        671.0
+      ]
+    ],
+    "flight_roi": [
+      [
+        306.0,
+        168.0
+      ],
+      [
+        1003.0,
+        170.0
+      ],
+      [
+        1111.0,
+        698.0
+      ],
+      [
+        101.0,
+        691.0
+      ]
+    ],
+    "top_pad_px": 200.0,
+    "side_pad_px": 120.0,
+    "bottom_pad_px": 20.0,
+    "min_motion_score": 0.0,
+    "static_run_frames": 8,
+    "static_radius_px": 4.0,
+    "max_step_px": 180.0,
+    "max_dir_change_deg": 160.0,
+    "max_gap": 6,
+    "sigma_q": 8.0,
+    "sigma_r": 4.0
+  },
+  "counts": {
+    "frames": 372,
+    "raw_visible": 313,
+    "in_roi": 243,
+    "rejected_roi": 70,
+    "rejected_static_motion": 1,
+    "rejected_static_lock": 18,
+    "rejected_jump": 9,
+    "retained_model": 215,
+    "smoothed": 215,
+    "interpolated": 29,
+    "final_visible": 244,
+    "max_missing_gap": 40
+  },
+  "examples": {
+    "rejected_jump": [
+      {
+        "frame": 14,
+        "dir_change_deg": 180.0,
+        "speed_px_per_gap_prev": 1.1,
+        "speed_px_per_gap_next": 2.2
+      },
+      {
+        "frame": 15,
+        "dir_change_deg": 175.2,
+        "speed_px_per_gap_prev": 2.2,
+        "speed_px_per_gap_next": 0.6
+      },
+      {
+        "frame": 67,
+        "dir_change_deg": 163.6,
+        "speed_px_per_gap_prev": 9.0,
+        "speed_px_per_gap_next": 17.7
+      },
+      {
+        "frame": 129,
+        "dir_change_deg": 174.8,
+        "speed_px_per_gap_prev": 19.4,
+        "speed_px_per_gap_next": 27.2
+      },
+      {
+        "frame": 159,
+        "dir_change_deg": 171.9,
+        "speed_px_per_gap_prev": 6.3,
+        "speed_px_per_gap_next": 2.2
+      }
+    ],
+    "interpolated": [
+      {
+        "frame_from": 66,
+        "frame_to": 68,
+        "gap": 1
+      },
+      {
+        "frame_from": 70,
+        "frame_to": 72,
+        "gap": 1
+      },
+      {
+        "frame_from": 79,
+        "frame_to": 81,
+        "gap": 1
+      },
+      {
+        "frame_from": 128,
+        "frame_to": 130,
+        "gap": 1
+      },
+      {
+        "frame_from": 130,
+        "frame_to": 132,
+        "gap": 1
+      }
+    ]
+  },
+  "warning": "Refined points use conservative Kalman smoothing and short-gap interpolation. Long gaps remain un-filled.  Points with Source=interp are not model predictions."
+}

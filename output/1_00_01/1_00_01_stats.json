@@ -1,0 +1,98 @@
+{
+  "video_id": "1_00_01",
+  "video_path": "inputs/1_00_01.mp4",
+  "output_path": "output/1_00_01/1_00_01_overlay.mp4",
+  "ball_csv": "output/1_00_01/1_00_01_ball.csv",
+  "players_csv": "output/1_00_01/1_00_01_players.csv",
+  "motion_csv": "output/1_00_01/1_00_01_motion.csv",
+  "frames_processed": 225,
+  "frame_count": 225,
+  "source_frames": 225,
+  "fps": 30.0,
+  "duration_s": 7.5,
+  "rally_count": 1,
+  "detect_calls": 225,
+  "detect_ratio": 1.0,
+  "court_points": [
+    [
+      613.0,
+      479.0
+    ],
+    [
+      864.0,
+      484.0
+    ],
+    [
+      922.0,
+      715.0
+    ],
+    [
+      54.0,
+      648.0
+    ]
+  ],
+  "court_points_px": [
+    [
+      613.0,
+      479.0
+    ],
+    [
+      864.0,
+      484.0
+    ],
+    [
+      922.0,
+      715.0
+    ],
+    [
+      54.0,
+      648.0
+    ]
+  ],
+  "court_size_m": {
+    "width": 6.1,
+    "length": 13.4
+  },
+  "homography": [
+    [
+      -0.004199712666375559,
+      -0.013891357281088403,
+      9.228384002129564
+    ],
+    [
+      0.000871223737559736,
+      -0.04373543162549971,
+      20.41521159749025
+    ],
+    [
+      2.251534589586546e-06,
+      -0.002450701521180326,
+      1.0
+    ]
+  ],
+  "ball_center_shift_m": 0.0,
+  "players": {
+    "far": {
+      "current_speed_mps": 0.0,
+      "rally_distance_m": 4.198828480614615,
+      "rally_time_s": 1.466666666666668,
+      "rally_max_speed_mps": 7.257259312020722,
+      "rally_avg_speed_mps": 2.8628376004190534,
+      "total_distance_m": 4.198828480614615,
+      "total_time_s": 1.466666666666668,
+      "total_max_speed_mps": 7.257259312020722,
+      "total_avg_speed_mps": 2.8628376004190534
+    },
+    "near": {
+      "current_speed_mps": 2.975895864269224,
+      "rally_distance_m": 11.862255491404301,
+      "rally_time_s": 7.3999999999999835,
+      "rally_max_speed_mps": 8.342634722820932,
+      "rally_avg_speed_mps": 1.6030074988384226,
+      "total_distance_m": 11.862255491404301,
+      "total_time_s": 7.3999999999999835,
+      "total_max_speed_mps": 8.342634722820932,
+      "total_avg_speed_mps": 1.6030074988384226
+    }
+  }
+}

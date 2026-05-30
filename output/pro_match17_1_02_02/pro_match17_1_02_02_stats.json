@@ -1,0 +1,98 @@
+{
+  "video_id": "pro_match17_1_02_02",
+  "video_path": "inputs/pro_match17_1_02_02.mp4",
+  "output_path": "output/pro_match17_1_02_02/pro_match17_1_02_02_overlay.mp4",
+  "ball_csv": "output/pro_match17_1_02_02/pro_match17_1_02_02_ball.csv",
+  "players_csv": "output/pro_match17_1_02_02/pro_match17_1_02_02_players.csv",
+  "motion_csv": "output/pro_match17_1_02_02/pro_match17_1_02_02_motion.csv",
+  "frames_processed": 372,
+  "frame_count": 372,
+  "source_frames": 372,
+  "fps": 29.97,
+  "duration_s": 12.412412412412413,
+  "rally_count": 1,
+  "detect_calls": 372,
+  "detect_ratio": 1.0,
+  "court_points": [
+    [
+      426.0,
+      368.0
+    ],
+    [
+      883.0,
+      370.0
+    ],
+    [
+      991.0,
+      678.0
+    ],
+    [
+      221.0,
+      671.0
+    ]
+  ],
+  "court_points_px": [
+    [
+      426.0,
+      368.0
+    ],
+    [
+      883.0,
+      370.0
+    ],
+    [
+      991.0,
+      678.0
+    ],
+    [
+      221.0,
+      671.0
+    ]
+  ],
+  "court_size_m": {
+    "width": 6.1,
+    "length": 13.4
+  },
+  "homography": [
+    [
+      0.07988015349003405,
+      0.0540443282688349,
+      -53.917258189685754
+    ],
+    [
+      -0.0019346286596173751,
+      0.4420626487225637,
+      -161.85490292090648
+    ],
+    [
+      3.335134554613969e-05,
+      0.01343982234000038,
+      1.0
+    ]
+  ],
+  "ball_center_shift_m": 0.0,
+  "players": {
+    "far": {
+      "current_speed_mps": 3.1620217745295194,
+      "rally_distance_m": 32.59192498128415,
+      "rally_time_s": 11.444778111444814,
+      "rally_max_speed_mps": 8.889930376350218,
+      "rally_avg_speed_mps": 2.8477550778107377,
+      "total_distance_m": 32.59192498128415,
+      "total_time_s": 11.444778111444814,
+      "total_max_speed_mps": 8.889930376350218,
+      "total_avg_speed_mps": 2.8477550778107377
+    },
+    "near": {
+      "current_speed_mps": 3.916612677610987,
+      "rally_distance_m": 30.6100539477569,
+      "rally_time_s": 12.078745412078785,
+      "rally_max_speed_mps": 8.998179353939017,
+      "rally_avg_speed_mps": 2.534208057497987,
+      "total_distance_m": 30.6100539477569,
+      "total_time_s": 12.078745412078785,
+      "total_max_speed_mps": 8.998179353939017,
+      "total_avg_speed_mps": 2.534208057497987
+    }
+  }
+}

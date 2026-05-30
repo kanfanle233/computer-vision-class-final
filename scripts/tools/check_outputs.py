@@ -29,6 +29,11 @@ def check_video(data_root, video):
     warnings = []
     files = video.get("files", {})
     frame_count = int(video.get("frame_count") or 0)
+    quality = {}
+    quality_rel = files.get("quality")
+    if quality_rel and (data_root / quality_rel).exists():
+        quality = read_json(data_root / quality_rel)
+    ball_quality_level = str(quality.get("ball_quality_level") or video.get("quality", {}).get("ball_quality_level") or "")
 
     required = ["analysis", "ball", "players", "motion", "quality", "overlay_video"]
     for key in required:
@@ -57,6 +62,8 @@ def check_video(data_root, video):
         path = data_root / rel
         if path.exists():
             rows = csv_row_count(path)
+            if key == "ball" and ball_quality_level == "Red" and rows == 0:
+                continue
             if rows != expected:
                 errors.append(f"{video['id']}: {rel} has {rows} rows, expected {expected}")
 
@@ -71,9 +78,7 @@ def check_video(data_root, video):
     if not original_rel:
         warnings.append(f"{video['id']}: original video missing; original mode disabled")
 
-    quality_rel = files.get("quality")
     if quality_rel and (data_root / quality_rel).exists():
-        quality = read_json(data_root / quality_rel)
         warnings.extend(f"{video['id']}: {item}" for item in quality.get("warnings", []))
 
     return errors, warnings

@@ -4,6 +4,8 @@ param(
     [string]$WorkRoot = "",
     [string]$CourtPoints = "",
     [string]$BallCsv = "",
+    [double]$CourtWidthM = 6.1,
+    [double]$CourtLengthM = 13.4,
     [ValidateSet("auto", "cuda", "mps", "cpu")]
     [string]$TracknetDevice = "auto",
     [ValidateSet("auto", "cuda", "mps", "cpu")]
@@ -11,11 +13,16 @@ param(
     [double]$TracknetThreshold = 0.15,
     [ValidateSet("weight", "average", "nonoverlap")]
     [string]$TracknetEvalMode = "weight",
-    [int]$TracknetBatchSize = 4,
     [int]$PoseImgsz = 960,
     [int]$DetectInterval = 1,
+    [double]$BallTopPadPx = 160.0,
+    [double]$BallSidePadPx = 80.0,
+    [double]$BallMinMotionScore = 4.0,
+    [int]$BallMaxInterpGap = 2,
     [string]$PythonExe = "python",
     [switch]$ManualCourt,
+    [switch]$FilterBall,
+    [switch]$DrawCourtPolygon,
     [switch]$EmbeddedPanels,
     [switch]$CinematicFx,
     [switch]$NoFrontendExport
@@ -37,9 +44,14 @@ $pipelineArgs = @(
     "--pose-device", $PoseDevice,
     "--tracknet-threshold", "$TracknetThreshold",
     "--tracknet-eval-mode", $TracknetEvalMode,
-    "--tracknet-batch-size", "$TracknetBatchSize",
     "--pose-imgsz", "$PoseImgsz",
-    "--detect-interval", "$DetectInterval"
+    "--detect-interval", "$DetectInterval",
+    "--court-width-m", "$CourtWidthM",
+    "--court-length-m", "$CourtLengthM",
+    "--ball-top-pad-px", "$BallTopPadPx",
+    "--ball-side-pad-px", "$BallSidePadPx",
+    "--ball-min-motion-score", "$BallMinMotionScore",
+    "--ball-max-interp-gap", "$BallMaxInterpGap"
 )
 
 if ($WorkRoot) {
@@ -53,6 +65,12 @@ if ($BallCsv) {
 }
 if ($ManualCourt) {
     $pipelineArgs += "--manual-court"
+}
+if ($FilterBall) {
+    $pipelineArgs += "--filter-ball"
+}
+if ($DrawCourtPolygon) {
+    $pipelineArgs += "--draw-court-polygon"
 }
 if ($EmbeddedPanels) {
     $pipelineArgs += "--embedded-panels"

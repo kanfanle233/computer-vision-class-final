@@ -6,20 +6,20 @@
   "duration_s": 15.348682015348682,
   "court_points_px": [
     [
-      416.0,
-      423.0
+      418.0,
+      424.0
     ],
     [
-      864.0,
-      423.0
+      878.0,
+      424.0
     ],
     [
-      944.0,
-      706.0
+      941.0,
+      710.0
     ],
     [
-      227.0,
-      706.0
+      228.0,
+      708.0
     ]
   ],
   "court_size_m": {
@@ -28,43 +28,43 @@
   },
   "homography": [
     [
-      0.13282295706786337,
-      0.0887050844022126,
-      -92.77660084236713
+      0.07682869477402061,
+      0.0513994788981124,
+      -53.90777346834028
     ],
     [
-      -3.309183626991544e-17,
-      0.7392321094472736,
-      -312.6951822961967
+      1.0365744284233515e-17,
+      0.4215374367798898,
+      -178.73187319467323
     ],
     [
-      -3.2271913600538752e-18,
-      0.02069708394244828,
-      0.9999999999999999
+      5.685835919583507e-05,
+      0.011188013512369676,
+      1.0
     ]
   ],
   "players": {
     "far": {
-      "current_speed_mps": 3.250246949438209,
-      "rally_distance_m": 38.91060592763864,
-      "rally_time_s": 14.848181514848266,
-      "rally_max_speed_mps": 9.34028555840226,
-      "rally_avg_speed_mps": 2.620563729553536,
-      "total_distance_m": 38.91060592763864,
-      "total_time_s": 14.848181514848266,
-      "total_max_speed_mps": 9.34028555840226,
-      "total_avg_speed_mps": 2.620563729553536
+      "current_speed_mps": 4.973657612801275,
+      "rally_distance_m": 37.37380458040335,
+      "rally_time_s": 14.547881214547953,
+      "rally_max_speed_mps": 9.325289171668329,
+      "rally_avg_speed_mps": 2.569020466226337,
+      "total_distance_m": 37.37380458040335,
+      "total_time_s": 14.547881214547953,
+      "total_max_speed_mps": 9.325289171668329,
+      "total_avg_speed_mps": 2.569020466226337
     },
     "near": {
-      "current_speed_mps": 0.9151752833082236,
-      "rally_distance_m": 40.92792611768868,
-      "rally_time_s": 14.414414414414495,
-      "rally_max_speed_mps": 9.49439258980761,
-      "rally_avg_speed_mps": 2.839374874414636,
-      "total_distance_m": 40.92792611768868,
-      "total_time_s": 14.414414414414495,
-      "total_max_speed_mps": 9.49439258980761,
-      "total_avg_speed_mps": 2.839374874414636
+      "current_speed_mps": 0.8984409726996857,
+      "rally_distance_m": 43.74546419112362,
+      "rally_time_s": 14.948281614948371,
+      "rally_max_speed_mps": 8.898779105988135,
+      "rally_avg_speed_mps": 2.9264543790356403,
+      "total_distance_m": 43.74546419112362,
+      "total_time_s": 14.948281614948371,
+      "total_max_speed_mps": 8.898779105988135,
+      "total_avg_speed_mps": 2.9264543790356403
     }
   },
   "analysis_meta": {
@@ -73,17 +73,22 @@
     "fps": 29.97,
     "duration_s": 15.348682015348682,
     "resolution": "1280x720",
-    "ball_visible_rate": 0.8434782608695652,
+    "ball_visible_rate": 0.691304347826087,
+    "ball_spatial_rate": 0.12173913043478261,
+    "ball_filter_applied": true,
+    "ball_quality_level": "Green",
+    "ball_quality_score": 95.96,
+    "ball_low_confidence": false,
     "near_visible_rate": 1.0,
-    "far_visible_rate": 0.9869565217391304,
-    "detection_gaps": 6,
-    "near_distance_m": 40.92792611768868,
-    "far_distance_m": 38.91060592763864,
-    "max_speed_mps": 9.49439258980761
+    "far_visible_rate": 0.9608695652173913,
+    "detection_gaps": 5,
+    "near_distance_m": 43.74546419112362,
+    "far_distance_m": 37.37380458040335,
+    "max_speed_mps": 9.325289171668329
   },
   "original_video_meta": {
     "file_name": "pro_match19_1_01_01.mp4",
-    "path": "E:\\PythonProject\\pythonProject\\计算机视觉大作业\\badminton-pipeline-repro-windows-clean\\inputs\\pro_match19_1_01_01.mp4",
+    "path": "/Users/davidfang/PyCharmMiscProject/minicondapythonProject1/计算机视觉大作业/badminton-pipeline-repro/inputs/pro_match19_1_01_01.mp4",
     "size_bytes": 7736983,
     "width": 1280,
     "height": 720,
@@ -94,29 +99,29 @@
   },
   "uploaded_video_meta": {
     "file_name": "前端可视化.mp4",
-    "path": "E:\\PythonProject\\pythonProject\\计算机视觉大作业\\badminton-pipeline-repro-windows-clean\\inputs\\前端可视化.mp4",
-    "source": "missing_reference_video",
-    "warning": "Uploaded reference video was not found on disk."
+    "path": "/Users/davidfang/Desktop/lida/计算机视觉/前端可视化.mp4",
+    "size_bytes": 5699268,
+    "width": 960,
+    "height": 544,
+    "fps": 25.0,
+    "frame_count": 6641,
+    "duration_s": 265.64,
+    "resolution": "960x544",
+    "codec": "H.264 / AVC",
+    "bitrate_kbps": 123.6,
+    "audio_codec": "AAC LC",
+    "audio_sample_rate_hz": 44100,
+    "audio_channels": "stereo",
+    "audio_duration_s": 265.61,
+    "source": "uploaded_reference_video"
   },
-  "default_trajectory_mode": "reference",
-  "trajectory_modes": [
-    "reference",
-    "raw_prediction",
-    "filtered_prediction"
-  ],
-  "trajectory_metadata": {},
   "files": {
     "ball": "ball.csv",
     "players": "players.csv",
     "motion": "motion.csv",
     "quality": "quality.json",
-    "original_video": "original.webm",
+    "original_video": "original.mp4",
     "overlay_video": "overlay.mp4",
-    "final_video": "final.mp4",
-    "ball_modes": {
-      "reference": "ball_reference.csv",
-      "raw_prediction": "ball_raw_prediction.csv",
-      "filtered_prediction": "ball_filtered_prediction.csv"
-    }
+    "final_video": "final.mp4"
   }
 }

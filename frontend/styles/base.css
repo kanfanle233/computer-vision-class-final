@@ -1,18 +1,18 @@
 :root {
   color-scheme: light;
-  --bg: #f3f6f2;
+  --bg: #fafbfc;
   --surface: #ffffff;
-  --surface-soft: #f5f8f5;
-  --ink: #172b2a;
-  --muted: #607472;
-  --line: #d9e4df;
-  --blue: #086c64;
-  --teal: #18a89e;
-  --orange: #e38627;
-  --rose: #d64d60;
-  --shadow: 0 2px 8px rgba(16, 45, 42, 0.06);
-  --mono: "Cascadia Mono", "JetBrains Mono", Consolas, monospace;
-  --sans: "Microsoft YaHei UI", "Noto Sans SC", "Source Han Sans SC", sans-serif;
+  --surface-soft: #f4f7fa;
+  --ink: #2d3748;
+  --muted: #718096;
+  --line: #e2e8f0;
+  --blue: #3182ce;
+  --teal: #38b2ac;
+  --orange: #ed8936;
+  --rose: #d53f8c;
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --mono: "JetBrains Mono", "SFMono-Regular", Menlo, Consolas, monospace;
+  --sans: Inter, "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 * {
@@ -31,8 +31,7 @@ body {
   margin: 0;
   color: var(--ink);
   background:
-    radial-gradient(circle at 83% 0%, rgba(227, 134, 39, 0.13), transparent 340px),
-    linear-gradient(180deg, rgba(8, 108, 100, 0.09), rgba(243, 246, 242, 0) 310px),
+    linear-gradient(180deg, rgba(49, 130, 206, 0.05), rgba(250, 251, 252, 0) 260px),
     var(--bg);
   font-family: var(--sans);
   font-size: 14px;
@@ -57,9 +56,9 @@ p {
 }
 
 h1 {
-  font-size: clamp(22px, 1.9vw, 28px);
+  font-size: clamp(20px, 1.8vw, 24px);
   font-weight: 650;
-  letter-spacing: 0.03em;
+  letter-spacing: 0;
 }
 
 h2 {
@@ -68,10 +67,10 @@ h2 {
 }
 
 .eyebrow {
-  color: var(--blue);
+  color: var(--muted);
   font-family: var(--mono);
   font-size: 11px;
-  letter-spacing: 0.12em;
+  letter-spacing: 0;
   margin-bottom: 4px;
 }
 
@@ -90,6 +89,37 @@ h2 {
   font-family: var(--mono);
   font-size: 11px;
   padding: 2px 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  display: inline-block;
+}
+
+.quality-badge.quality-green {
+  border-color: rgba(56, 178, 172, 0.5);
+  color: #24736e;
+  background: rgba(56, 178, 172, 0.12);
+}
+
+.quality-badge.quality-yellow {
+  border-color: rgba(237, 137, 54, 0.5);
+  color: #975a16;
+  background: rgba(237, 137, 54, 0.12);
+}
+
+.quality-badge.quality-red {
+  border-color: rgba(229, 62, 62, 0.5);
+  color: #c53030;
+  background: rgba(229, 62, 62, 0.1);
+}
+
+.red-empty-state {
+  color: #888;
+  font-size: 12px;
+  padding: 12px 8px;
+  text-align: center;
+  line-height: 1.6;
 }
 
 .muted {

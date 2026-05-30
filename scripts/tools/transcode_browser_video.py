@@ -8,7 +8,6 @@ import cv2
 
 
 BROWSER_CODECS = ("avc1", "H264", "h264")
-WEBM_CODECS = ("VP80", "VP90")
 
 
 def _fourcc_name(value: float) -> str:
@@ -34,67 +33,8 @@ def _open_h264_writer(path: Path, fps: float, size: tuple[int, int]) -> tuple[cv
     raise RuntimeError("OpenCV cannot open an H.264/AVC writer on this machine.")
 
 
-def _transcode_to_webm(input_path: Path, output_path: Path) -> dict:
-    cap = cv2.VideoCapture(str(input_path))
-    if not cap.isOpened():
-        raise RuntimeError(f"Cannot open input video: {input_path}")
-    fps = cap.get(cv2.CAP_PROP_FPS) or 30.0
-    width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
-    height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-    output_path = output_path.with_suffix(".webm")
-    output_path.parent.mkdir(parents=True, exist_ok=True)
-    tmp_path = output_path.with_name(f"{output_path.stem}.webm_tmp{output_path.suffix}")
-    if tmp_path.exists():
-        tmp_path.unlink()
-
-    writer = None
-    codec = ""
-    for candidate in WEBM_CODECS:
-        writer = cv2.VideoWriter(str(tmp_path), cv2.VideoWriter_fourcc(*candidate), fps, (width, height))
-        if writer.isOpened():
-            codec = candidate
-            break
-        writer.release()
-    if writer is None or not writer.isOpened():
-        cap.release()
-        raise RuntimeError("OpenCV cannot open a VP9/VP8 WebM writer on this machine.")
-
-    frame_count = 0
-    try:
-        while True:
-            ok, frame = cap.read()
-            if not ok:
-                break
-            writer.write(frame)
-            frame_count += 1
-    finally:
-        cap.release()
-        writer.release()
-    if frame_count <= 0 or not tmp_path.exists() or tmp_path.stat().st_size <= 0:
-        if tmp_path.exists():
-            tmp_path.unlink()
-        raise RuntimeError(f"No frames were transcoded from {input_path}")
-    os.replace(tmp_path, output_path)
-    return {
-        "input": str(input_path),
-        "output": str(output_path),
-        "codec": codec,
-        "frames": frame_count,
-        "fps": fps,
-        "size": f"{width}x{height}",
-        "output_codec": video_codec(output_path),
-    }
-
-
 def _transcode_with_ffmpeg(input_path: Path, output_path: Path) -> dict | None:
     ffmpeg = shutil.which("ffmpeg")
-    if not ffmpeg:
-        try:
-            import imageio_ffmpeg
-        except ImportError:
-            imageio_ffmpeg = None
-        if imageio_ffmpeg is not None:
-            ffmpeg = imageio_ffmpeg.get_ffmpeg_exe()
     if not ffmpeg:
         return None
     output_path.parent.mkdir(parents=True, exist_ok=True)
@@ -141,24 +81,6 @@ def transcode_to_h264(input_path: Path, output_path: Path, overwrite: bool = Fal
     if output_path.exists() and not overwrite:
         raise FileExistsError(output_path)
 
-    source_codec = video_codec(input_path)
-    if source_codec.lower() in {"h264", "avc1"}:
-        output_path.parent.mkdir(parents=True, exist_ok=True)
-        if input_path.resolve() != output_path.resolve():
-            shutil.copy2(input_path, output_path)
-        cap = cv2.VideoCapture(str(output_path))
-        result = {
-            "input": str(input_path),
-            "output": str(output_path),
-            "codec": "copy",
-            "frames": int(cap.get(cv2.CAP_PROP_FRAME_COUNT) or 0),
-            "fps": cap.get(cv2.CAP_PROP_FPS) or 0.0,
-            "size": f"{int(cap.get(cv2.CAP_PROP_FRAME_WIDTH) or 0)}x{int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT) or 0)}",
-            "output_codec": source_codec,
-        }
-        cap.release()
-        return result
-
     cap = cv2.VideoCapture(str(input_path))
     if not cap.isOpened():
         raise RuntimeError(f"Cannot open input video: {input_path}")
@@ -186,7 +108,7 @@ def transcode_to_h264(input_path: Path, output_path: Path, overwrite: bool = Fal
         ffmpeg_result = _transcode_with_ffmpeg(input_path, output_path)
         if ffmpeg_result:
             return ffmpeg_result
-        return _transcode_to_webm(input_path, output_path)
+        raise RuntimeError(f"{exc} Install ffmpeg with libx264 for browser video export.") from exc
     frame_count = 0
     try:
         while True:

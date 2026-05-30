@@ -1,6 +1,5 @@
 import os
 import argparse
-import csv
 import numpy as np
 from tqdm import tqdm
 
@@ -31,29 +30,7 @@ def resolve_device(requested):
     return torch.device(name)
 
 
-def extract_candidates(heatmap, threshold, img_scaler, max_candidates=8):
-    """Return connected-component alternatives before temporal path selection."""
-    mask = (heatmap >= threshold).astype("uint8")
-    contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-    candidates = []
-    for contour in contours:
-        x, y, width, height = cv2.boundingRect(contour)
-        if width <= 0 or height <= 0:
-            continue
-        response = heatmap[y : y + height, x : x + width]
-        candidates.append(
-            {
-                "X": int((x + width / 2) * img_scaler[0]),
-                "Y": int((y + height / 2) * img_scaler[1]),
-                "Confidence": float(response.max()) if response.size else 0.0,
-                "Area": float(cv2.contourArea(contour)),
-            }
-        )
-    candidates.sort(key=lambda item: (item["Confidence"], item["Area"]), reverse=True)
-    return candidates[:max_candidates]
-
-
-def predict(indices, y_pred=None, c_pred=None, img_scaler=(1, 1), candidate_rows=None, max_candidates=8):
+def predict(indices, y_pred=None, c_pred=None, img_scaler=(1, 1)):
     """ Predict coordinates from heatmap or inpainted coordinates. 
 
         Args:
@@ -73,12 +50,11 @@ def predict(indices, y_pred=None, c_pred=None, img_scaler=(1, 1), candidate_rows
     indices = indices.detach().cpu().numpy()if torch.is_tensor(indices) else indices.numpy()
     
     # Transform input for heatmap prediction
-    score_maps = None
     if y_pred is not None:
         thresh = float(os.environ.get("TRACKNET_VIS_THRESH", "0.2"))
-        score_maps = y_pred.detach().cpu().numpy() if torch.is_tensor(y_pred) else y_pred
-        score_maps = to_img_format(score_maps) # (N, L, H, W)
-        y_pred = score_maps >= thresh
+        y_pred = y_pred > thresh
+        y_pred = y_pred.detach().cpu().numpy() if torch.is_tensor(y_pred) else y_pred
+        y_pred = to_img_format(y_pred) # (N, L, H, W)
     
     # Transform input for coordinate prediction
     if c_pred is not None:
@@ -99,11 +75,6 @@ def predict(indices, y_pred=None, c_pred=None, img_scaler=(1, 1), candidate_rows
                     bbox_pred = predict_location(to_img(y_p))
                     cx_pred, cy_pred = int(bbox_pred[0]+bbox_pred[2]/2), int(bbox_pred[1]+bbox_pred[3]/2)
                     cx_pred, cy_pred = int(cx_pred*img_scaler[0]), int(cy_pred*img_scaler[1])
-                    if candidate_rows is not None:
-                        for rank, candidate in enumerate(
-                            extract_candidates(score_maps[n][f], thresh, img_scaler, max_candidates), start=1
-                        ):
-                            candidate_rows.append({"Frame": int(f_i), "Rank": rank, **candidate})
                 else:
                     raise ValueError('Invalid input')
                 vis_pred = 0 if cx_pred == 0 and cy_pred == 0 else 1
@@ -117,40 +88,6 @@ def predict(indices, y_pred=None, c_pred=None, img_scaler=(1, 1), candidate_rows
     
     return pred_dict    
 
-
-def normalize_prediction_frames(pred_dict, frame_count):
-    """Emit exactly one prediction row per source frame."""
-    first_by_frame = {}
-    for position, frame in enumerate(pred_dict["Frame"]):
-        frame = int(frame)
-        if frame not in first_by_frame and 0 <= frame < frame_count:
-            first_by_frame[frame] = position
-    normalized = dict(pred_dict)
-    normalized["Frame"] = list(range(frame_count))
-    for key in ("X", "Y", "Visibility"):
-        normalized[key] = [pred_dict[key][first_by_frame[frame]] if frame in first_by_frame else 0 for frame in range(frame_count)]
-    return normalized
-
-
-def write_candidate_csv(candidate_rows, path, frame_count):
-    grouped = {}
-    accepting_frame = None
-    for row in candidate_rows:
-        frame = int(row["Frame"])
-        if not 0 <= frame < frame_count:
-            continue
-        if int(row["Rank"]) == 1:
-            accepting_frame = frame if frame not in grouped else None
-            if accepting_frame is not None:
-                grouped[frame] = []
-        if accepting_frame == frame:
-            grouped[frame].append(row)
-    rows = [candidate for frame in sorted(grouped) for candidate in grouped[frame]]
-    with open(path, "w", encoding="utf-8", newline="") as handle:
-        writer = csv.DictWriter(handle, fieldnames=["Frame", "Rank", "X", "Y", "Confidence", "Area"])
-        writer.writeheader()
-        writer.writerows(rows)
-
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--video_file', type=str, help='file path of the video')
@@ -163,7 +100,6 @@ if __name__ == '__main__':
     parser.add_argument('--save_dir', type=str, default='pred_result', help='directory to save the prediction result')
     parser.add_argument('--large_video', action='store_true', default=False, help='whether to process large video')
     parser.add_argument('--output_video', action='store_true', default=False, help='whether to output video with predicted trajectory')
-    parser.add_argument('--output_candidates', action='store_true', default=False, help='write heatmap connected-component candidates for temporal filtering')
     parser.add_argument('--traj_len', type=int, default=8, help='length of trajectory to draw on video')
     parser.add_argument('--device', type=str, default='auto', choices=['auto', 'cpu', 'cuda', 'mps'], help='inference device')
     args = parser.parse_args()
@@ -173,7 +109,6 @@ if __name__ == '__main__':
     video_range = args.video_range if args.video_range else None
     large_video = args.large_video
     out_csv_file = os.path.join(args.save_dir, f'{video_name}_ball.csv')
-    out_candidates_file = os.path.join(args.save_dir, f'{video_name}_candidates.csv')
     out_video_file = os.path.join(args.save_dir, f'{video_name}.mp4')
 
     if not os.path.exists(args.save_dir):
@@ -201,14 +136,11 @@ if __name__ == '__main__':
 
     cap = cv2.VideoCapture(args.video_file)
     w, h = (int(cap.get(cv2.CAP_PROP_FRAME_WIDTH)), int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT)))
-    source_frame_count = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
-    cap.release()
     w_scaler, h_scaler = w / WIDTH, h / HEIGHT
     img_scaler = (w_scaler, h_scaler)
 
     tracknet_pred_dict = {'Frame':[], 'X':[], 'Y':[], 'Visibility':[], 'Inpaint_Mask':[],
                         'Img_scaler': (w_scaler, h_scaler), 'Img_shape': (w, h)}
-    candidate_rows = []
 
     # Test on TrackNet
     tracknet.eval()
@@ -233,7 +165,7 @@ if __name__ == '__main__':
                 y_pred = tracknet(x).detach().cpu()
             
             # Predict
-            tmp_pred = predict(i, y_pred=y_pred, img_scaler=img_scaler, candidate_rows=candidate_rows)
+            tmp_pred = predict(i, y_pred=y_pred, img_scaler=img_scaler)
             for key in tmp_pred.keys():
                 tracknet_pred_dict[key].extend(tmp_pred[key])
     else:
@@ -294,7 +226,7 @@ if __name__ == '__main__':
                         ensemble_y_pred = torch.cat((ensemble_y_pred, y_pred.reshape(1, 1, HEIGHT, WIDTH)), dim=0)
 
             # Predict
-            tmp_pred = predict(ensemble_i, y_pred=ensemble_y_pred, img_scaler=img_scaler, candidate_rows=candidate_rows)
+            tmp_pred = predict(ensemble_i, y_pred=ensemble_y_pred, img_scaler=img_scaler)
             for key in tmp_pred.keys():
                 tracknet_pred_dict[key].extend(tmp_pred[key])
 
@@ -396,11 +328,7 @@ if __name__ == '__main__':
 
     # Write csv file
     pred_dict = inpaint_pred_dict if inpaintnet is not None else tracknet_pred_dict
-    pred_dict = normalize_prediction_frames(pred_dict, source_frame_count)
     write_pred_csv(pred_dict, save_file=out_csv_file)
-    if args.output_candidates:
-        write_candidate_csv(candidate_rows, out_candidates_file, source_frame_count)
-        print(f'Candidate CSV: {out_candidates_file}')
 
     # Write video with predicted coordinates
     if args.output_video:

@@ -46,12 +46,14 @@ export function createSpeedChart(container, onSeek) {
         label: "Confidence",
       };
     }
+    const qLevel = data.quality.ball_quality_level || "Green";
+    const showBallSpeed = qLevel !== "Red" && (!data.quality.ball_filter_applied || (data.quality.ball_spatial_rate || 0) >= 0.5);
     return {
-      ball: data.ball.filter((d) => !d.is_missing).map((d) => {
+      ball: showBallSpeed ? data.ball.filter((d) => !d.is_missing).map((d) => {
         let val = d.speed_mps;
         if (val !== null && val !== undefined && val > 38.0) val = null;
         return { frame: d.frame, value: val };
-      }),
+      }) : [],
       near: data.motion.filter((d) => d.role === "near").map((d) => {
         let val = d.speed_mps;
         if (val !== null && val !== undefined && val > 15.0) val = null;

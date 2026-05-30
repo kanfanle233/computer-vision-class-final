@@ -111,8 +111,7 @@ def load_ball_dict(csv_path):
                 vis = int(float(row.get("Visibility", "0")))
                 x = int(float(row.get("X", "0")))
                 y = int(float(row.get("Y", "0")))
-                source = row.get("Source", row.get("source", "model" if vis > 0 else "missing"))
-                ball[idx] = (vis, x, y, source)
+                ball[idx] = (vis, x, y)
             except Exception:
                 continue
     return ball
@@ -126,7 +125,7 @@ def estimate_ball_center_shift(ball_dict, homography, court_quad, court_w_m, cou
     keys = sorted(ball_dict.keys())
     step = max(1, len(keys) // 2000)
     for i in keys[::step]:
-        vis, bx, by, _ = ball_dict[i]
+        vis, bx, by = ball_dict[i]
         if vis <= 0:
             continue
         img_pt = clamp_point_to_quad((bx, by), court_quad)
@@ -1259,7 +1258,7 @@ def run(args):
 
         ball_m_for_map = None
         if frame_idx in ball_dict:
-            vis, bx, by, _ = ball_dict[frame_idx]
+            vis, bx, by = ball_dict[frame_idx]
             if vis > 0:
                 img_pt = clamp_point_to_quad((bx, by), court_quad)
                 ball_m_for_map = to_court_m(img_pt, homography)

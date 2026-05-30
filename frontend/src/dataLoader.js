@@ -11,6 +11,8 @@ const numberFields = new Set([
   "speed_mps",
   "is_missing",
   "is_interpolated",
+  "is_spatial_valid",
+  "speed_valid",
   "bbox_x1",
   "bbox_y1",
   "bbox_x2",
@@ -44,7 +46,6 @@ export async function loadManifest() {
 export async function loadVideoDataset(videoEntry) {
   const files = videoEntry.files;
   const base = `${DATA_ROOT}/`;
-  const ballModeFiles = files.ball_modes || {};
   const [analysis, quality, ball, players, motion] = await Promise.all([
     d3.json(`${base}${files.analysis}`),
     d3.json(`${base}${files.quality}`),
@@ -52,19 +53,11 @@ export async function loadVideoDataset(videoEntry) {
     d3.csv(`${base}${files.players}`, coerceRow),
     d3.csv(`${base}${files.motion}`, coerceRow),
   ]);
-  const ballModeEntries = await Promise.all(
-    Object.entries(ballModeFiles).map(async ([mode, file]) => [mode, await d3.csv(`${base}${file}`, coerceRow)])
-  );
-  const ballModes = Object.fromEntries(ballModeEntries);
-  const defaultMode = analysis.default_trajectory_mode || quality.default_trajectory_mode;
   return {
     entry: videoEntry,
     analysis,
     quality,
-    ball: ballModes[defaultMode] || ball,
-    ballModes,
-    trajectoryMode: defaultMode || "unclassified",
-    qualityModes: quality.trajectory_modes || {},
+    ball,
     players,
     motion,
     urls: {
