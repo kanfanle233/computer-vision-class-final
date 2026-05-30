@@ -6,7 +6,7 @@
 [![PyTorch](https://img.shields.io/badge/pytorch-2.x-ee4c2c.svg)](https://pytorch.org/)
 [![GPU](https://img.shields.io/badge/GPU-CUDA%20%7C%20MPS-blue.svg)](README_PORTABLE.md)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](#license)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/ychenfen/badminton-pipeline-repro/pulls)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/kanfanle233/computer-vision-class-final/pulls)
 
 把一段普通的羽毛球比赛视频，转换成带**运动员轨迹、移动速度、累计跑动距离、羽毛球飞行轨迹**的可视化分析视频，最后还能加上电影级"子弹时间"特效。新增 **Web 前端仪表盘**，提供交互式多维数据探索。
 
@@ -65,13 +65,15 @@
 
 ![原始第一帧](docs/images/01_input_frame.jpg)
 
-**输出**：叠加分析后的视频，球轨迹 + 球员分析 + 统计面板
+**当前流程输出**：现版本默认产出的是逐视频分析文件、前端仪表盘数据，以及可切换的 `overlay/final` 视频版本；Mini Court、质量面板、统计卡片等视图不再固定烧录进视频画面。
 
-![完整叠加效果](docs/images/04_overlay_full.jpg)
+当前真实交付物包括：
+- `*_overlay.mp4`：叠加球员分析与球轨迹的分析视频
+- `*_final.mp4`：最终渲染版本
+- `*_ball.csv` / `*_players.csv` / `*_motion.csv` / `*_stats.json`：结构化分析结果
+- `frontend/public/data/`：前端仪表盘使用的数据导出
 
-**Mini Court**（俯视图轨迹：黄色 = 球员 A，粉色 = 球员 B，青色 = 球）
-
-![Mini Court 放大](docs/images/06_minicourt_close.jpg)
+**说明**：Mini Court、Heatmap、Zone Occupancy、Quality Stats 等视图现在主要在 Web 前端仪表盘中交互式展示，而不是作为固定大面板直接嵌入每一帧输出视频。
 
 ---
 
@@ -158,8 +160,8 @@ cd frontend && python3 -m http.server 8080
 
 ```bash
 git lfs install     # 没装的话先 brew install git-lfs
-git clone https://github.com/ychenfen/badminton-pipeline-repro.git
-cd badminton-pipeline-repro
+git clone https://github.com/kanfanle233/computer-vision-class-final.git
+cd computer-vision-class-final
 ```
 
 模型权重 `weights/TrackNet_best.pt`（130 MB）和样本视频通过 Git LFS 自动下载。
@@ -575,15 +577,15 @@ repository-root/
 如果这个项目帮到了你的研究、论文、或产品，star 是最简单的支持方式。论文引用：
 
 ```bibtex
-@misc{badminton_pipeline_repro,
-  author       = {ychenfen},
-  title        = {Badminton Match Video Analytics Pipeline},
+@misc{computer_vision_class_final,
+  author       = {kanfanle233},
+  title        = {Computer Vision Class Final: Badminton Match Video Visual Analytics},
   year         = {2026},
-  howpublished = {\url{https://github.com/ychenfen/badminton-pipeline-repro}}
+  howpublished = {\url{https://github.com/kanfanle233/computer-vision-class-final}}
 }
 ```
 
-如果你做了改进或衍生项目，欢迎提 PR / Issue / Discussion。
+如果你基于这个课程项目做了改进或衍生版本，欢迎在当前仓库提交 PR / Issue / Discussion。
 
 ---
 
