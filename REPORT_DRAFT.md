@@ -2,7 +2,7 @@
 
 ## 摘要
 
-本项目复现了 ychenfen/badminton-pipeline-repro 的羽毛球视频分析系统，并针对 macOS 环境进行了本地化优化。系统采用 TrackNet 进行羽毛球检测，通过 refine 后处理流程提升轨迹质量，结合 YOLOv8 进行球员姿态估计和运动分析，最终通过 D3.js 前端实现可视化展示。经过工程优化，所有 9 个测试视频的球轨迹质量均达到 Green 标准（质量分数 89-96 分），可完整展示球轨迹、球速线和球员运动分析。本项目是工程复现与本地化优化，不是重新训练模型，质量分数是工程筛查指标，不等价于人工标注的准确率。
+本项目复现并整理了 ychenfen/badminton-pipeline-repro 的羽毛球视频分析系统，并针对 macOS 环境进行了本地化优化。需要明确说明的是：当前仓库不是从零开始独立实现的全新 pipeline，而是在上游工程基础上完成课程项目所需的结构整理、运行适配、结果归档与前端展示包装。系统采用 TrackNet 进行羽毛球检测，通过 refine 后处理流程提升轨迹质量，结合 YOLOv8 进行球员姿态估计和运动分析，最终通过 D3.js 前端实现可视化展示。经过工程优化，所有 9 个测试视频的球轨迹质量均达到 Green 标准（质量分数 89-96 分），可完整展示球轨迹、球速线和球员运动分析。本项目是工程复现与本地化优化，不是重新训练模型，质量分数是工程筛查指标，不等价于人工标注的准确率。
 
 **关键词**：羽毛球检测、TrackNet、运动分析、视频处理、前端可视化
 
@@ -23,6 +23,15 @@
 ### 1.3 项目定位
 
 本项目是工程复现与本地化优化，不是重新训练模型。我们使用预训练的 TrackNet 模型进行球检测，通过后处理流程提升轨迹质量，并建立质量评估体系判断可视化可信度。
+
+### 1.4 上游来源与贡献边界
+
+当前课程仓库明确基于上游仓库 `ychenfen/badminton-pipeline-repro`。为了保持学术和工程表达上的诚实性，本文将两类贡献分开：
+
+1. **继承内容**：核心 `TrackNet -> overlay -> FX` 处理链路、主要脚本组织方式、以及大量基础工程实现来自上游仓库。
+2. **本地新增内容**：仓库结构整理、macOS / Apple Silicon 运行适配、参数收口、结果归档、前端数据导出、D3.js 展示页面、README 与课程提交文档。
+
+因此，本文不把该系统描述为“完全原创的端到端羽毛球分析框架”，而将其定位为**基于上游开源工程的课程复现与本地化改编项目**。
 
 ## 2. 系统总体设计
 
@@ -319,7 +328,7 @@ score = 35 × score_visible + 20 × score_gap + 10 × score_interp + 15 × score
 
 ## 9. 总结
 
-本项目成功复现了 ychenfen/badminton-pipeline-repro 的羽毛球视频分析系统，并针对 macOS 环境进行了本地化优化。通过建立球轨迹质量评估体系，所有 9 个测试视频的球轨迹质量均达到 Green 标准，可完整展示球轨迹、球速线和球员运动分析。
+本项目成功复现并整理了 ychenfen/badminton-pipeline-repro 的羽毛球视频分析系统，并针对 macOS 环境进行了本地化优化。需要再次强调的是：当前成果建立在上游开源工程基础之上，本仓库的主要贡献是课程项目场景下的结构整理、运行适配、结果收口和展示包装，而不是从零提出一套全新的端到端羽毛球分析框架。通过建立球轨迹质量评估体系，所有 9 个测试视频的球轨迹质量均达到 Green 标准，可完整展示球轨迹、球速线和球员运动分析。
 
 本项目是工程复现与本地化优化，不是重新训练模型。质量分数是工程筛查指标，用于判断可视化可信度，不等价于人工标注的准确率。系统已经可以用于教学演示和初步的运动分析，但如果需要更精确的检测结果，建议进行模型微调和人工标注。
 
@@ -328,6 +337,8 @@ score = 35 × score_visible + 20 × score_gap + 10 × score_interp + 15 × score
 1. TrackNet: A Deep Learning Network for Tracking High-speed and Small Objects in Sports Applications
 2. YOLOv8: Ultralytics YOLOv8
 3. D3.js: Data-Driven Documents
+4. ychenfen/badminton-pipeline-repro, GitHub repository
+5. kanfanle233/computer-vision-class-final, GitHub repository
 
 ## 附录
 

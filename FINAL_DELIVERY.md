@@ -1,5 +1,17 @@
 # 最终交付说明
 
+## 项目来源与边界说明
+
+本仓库是**课程项目整理版**，明确基于上游仓库 [ychenfen/badminton-pipeline-repro](https://github.com/ychenfen/badminton-pipeline-repro) 进行工程复现、本地化整理和展示包装。
+
+为避免误导，需要把边界说清楚：
+
+- 核心 `TrackNet -> overlay -> FX` 主流程和大量基础脚本来源于上游仓库；
+- 当前仓库重点完成的是课程提交所需的结构整理、文档重写、本地运行适配、结果归档与前端展示收口；
+- 当前仓库不应被描述成“从零开始独立实现的全新羽毛球分析系统”。
+
+更详细的说明见 [UPSTREAM_ATTRIBUTION.md](UPSTREAM_ATTRIBUTION.md)。
+
 ## 项目主流程
 
 ```

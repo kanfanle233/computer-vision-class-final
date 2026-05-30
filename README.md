@@ -8,11 +8,25 @@
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](#license)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/kanfanle233/computer-vision-class-final/pulls)
 
-把一段普通的羽毛球比赛视频，转换成带**运动员轨迹、移动速度、累计跑动距离、羽毛球飞行轨迹**的可视化分析视频，最后还能加上电影级"子弹时间"特效。新增 **Web 前端仪表盘**，提供交互式多维数据探索。
+把一段普通的羽毛球比赛视频，转换成带**运动员轨迹、移动速度、累计跑动距离、羽毛球飞行轨迹**的可视化分析结果，并通过 **Web 前端仪表盘**提供交互式多维数据探索。当前仓库是在上游工程基础上的课程项目整理版，而不是从零开始独立重写的全新系统。
 
 整套系统基于 **TrackNet（球检测） + YOLOv8s-pose（球员姿态） + ByteTrack（多目标跟踪） + 透视矫正**，支持 Windows NVIDIA CUDA、Apple Silicon MPS 与 CPU 自动加速。跨平台复制运行请先看 [README_PORTABLE.md](README_PORTABLE.md)。
 
 ![效果演示](docs/images/demo.gif)
+
+---
+
+## 项目来源与归因说明
+
+**这不是一个从零开始独立重写的全新 pipeline。** 当前仓库是课程项目整理版，明确基于上游仓库 [ychenfen/badminton-pipeline-repro](https://github.com/ychenfen/badminton-pipeline-repro) 进行复现、整理和本地化改编。
+
+为了避免误导，这里把边界说清楚：
+
+- **继承自上游仓库的内容**：核心 `TrackNet -> player overlay -> FX` 处理链路、关键脚本结构，以及整体工程骨架。
+- **本仓库新增或重点调整的内容**：仓库根目录重组、README/交付文档整理、macOS/MPS 本地运行适配、参数收口、前端数据导出、D3.js 仪表盘展示、质量评分与课程提交所需的工程包装。
+- **不应声称的内容**：本仓库不是重新训练 TrackNet 的全新研究实现，也不是完全原创的端到端羽毛球分析框架。
+
+更详细的上游归因和改动边界见 [UPSTREAM_ATTRIBUTION.md](UPSTREAM_ATTRIBUTION.md)。
 
 ---
 
@@ -558,6 +572,7 @@ repository-root/
 
 ## 致谢
 
+- 当前仓库的基础工程明确来源于上游仓库 [ychenfen/badminton-pipeline-repro](https://github.com/ychenfen/badminton-pipeline-repro)。本仓库是在其基础上完成课程项目整理、本地化适配、参数收口、文档重写和前端展示集成。
 - TrackNet 模型来自 [TrackNetV3](https://github.com/qaz812345/TrackNetV3)
 - YOLOv8 来自 [Ultralytics](https://github.com/ultralytics/ultralytics)
 - ByteTrack 跟踪算法 [ByteTrack](https://github.com/ifzhang/ByteTrack)
@@ -568,15 +583,22 @@ repository-root/
 
 ## License
 
-代码部分 MIT。模型权重和样本视频按各自原始来源的 license 使用，仅供学习研究。
+本仓库包含大量基于上游仓库改编的代码。上游仓库 README 的 License 一节标注“代码部分 MIT”；当前仓库保留对上游仓库的明确署名与引用。模型权重和样本视频按各自原始来源的 license 使用，仅供学习研究。
 
 ---
 
 ## 引用
 
-如果这个项目帮到了你的研究、论文、或产品，star 是最简单的支持方式。论文引用：
+如果你的报告、论文或展示直接使用了当前课程项目整理版，建议引用**本仓库**；如果你的描述涉及继承的基础 pipeline、核心工程结构或上游脚本来源，建议**同时引用上游仓库和本仓库**。
 
 ```bibtex
+@misc{badminton_pipeline_repro_upstream,
+  author       = {ychenfen},
+  title        = {Badminton Match Video Analytics Pipeline},
+  year         = {2026},
+  howpublished = {\url{https://github.com/ychenfen/badminton-pipeline-repro}}
+}
+
 @misc{computer_vision_class_final,
   author       = {kanfanle233},
   title        = {Computer Vision Class Final: Badminton Match Video Visual Analytics},
@@ -585,7 +607,7 @@ repository-root/
 }
 ```
 
-如果你基于这个课程项目做了改进或衍生版本，欢迎在当前仓库提交 PR / Issue / Discussion。
+如果你基于这个课程项目做了改进或衍生版本，欢迎在当前仓库提交 PR / Issue / Discussion，并在文档中继续保留对上游仓库的清晰归因与引用。
 
 ---
 
